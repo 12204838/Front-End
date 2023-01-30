@@ -42,14 +42,31 @@
     </h3>
       <h3>admin
       <label class="switch">
-        <input type="checkbox" id="isadmin" value="true">
+        <input type="checkbox" id="isadmin">
         <span class="slider round"></span>
       </label>
     </h3>
     <button type="button" onclick = "addUser()">add user</button>
     <button type="button" onclick ="updateUser()">update User</button>
+    <button type="button" onclick ="deleteUser()">delete User</button>
 </body>
 <script>
+
+    function deleteUser(){
+        let idInput = document.getElementById("id").value;
+
+         // Delete
+         fetch(`http://localhost:8080/user/delete/${idInput}`,{
+            method: "DELETE",
+        })
+        .then((res) => {
+            alert("Is goedgegaan");
+        })
+        .catch((error) =>{
+            alert("Er is iets fouts gegaan");
+        });
+
+    }
 
     function updateUser(){
         //formulier uitlezen
