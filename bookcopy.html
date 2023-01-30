@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head class="flex-container">
-    <link rel="stylesheet" href="booktablestyle.css">
+    <link rel="stylesheet" href="bookcopystyle.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
     Working Talent Book Table
   </h1>
  </header>
-  <div class = "container" id="allBooksTable" ></div>
+  <div class = "container" id="allBookCopiesTable" ></div>
   
   
   <div class = "flex-container">
@@ -33,9 +33,6 @@
       <label for="quantity">ISBN</label>
       <input type="text" id="quantity">
       <br>
-      <label for="amount">amount</label>
-      <input type="text" id="amount">
-      <br>
     </div>
     
     <div class = "container">
@@ -44,8 +41,6 @@
       <button class= "update-book-button button" type = "button" onclick = "updateBook()">edit book</button>
       <br>
       <button class= "delete-book-button button" type = "button" onclick = "deleteBook()">delete book</button>
-      <br>
-      <button class= "delete-book-button button" type = "button" onclick = " addBookCopies()">add bookcopies</button>
     </div>
   </div>
 
@@ -59,37 +54,32 @@
 
 
   <script >
-      function showAllBooks(){
+      function showAllBookCopies(){
           var xhr = new XMLHttpRequest();
           xhr.onreadystatechange = function(){
                   console.log(this.responseText);
-                  var allBooks = JSON.parse(this.responseText);
-                  var eindstring =`<table id = "booktable" class ="styled-table">
+                  var allBookCopies = JSON.parse(this.responseText);
+                  var eindstring =`<table class ="styled-table">
                                               <thead>
                                                   <tr>
                                                       <th>ID</th>
-                                                      <th>Title</th>
-                                                      <th>Author Name</th>
-                                                      <th>ISBN</th>
-                                                      <th>Add Book</th>
+                                                      <th>Book ID</th>
                                                   </tr>
                                           </thead>`;
-                      for (x=0; x<allBooks.length; x++){
+                      for (x=0; x<allBookCopies.length; x++){
                           eindstring +=`
                                       <tr>    
-                                          <td class= {x}>${allBooks[x].id}</td>
-                                          <td>${allBooks[x].title}</td> 
-                                              <td>${allBooks[x].author}</td>
-                                              <td>${allBooks[x].isbn}</td>     
-                                              <td><button onclick = "addBookCopies()" class="editbtn">add</button></td>  
+                                          <td>${allBookCopies[x].id}</td>
+                                          <td>${allBookCopies[x].bookId}</td> 
+                                                     
                                       </tr>`;
                       }
                       eindstring += "</table>";
-                      document.getElementById("allBooksTable").innerHTML = eindstring;
+                      document.getElementById("allBookCopiesTable").innerHTML = eindstring;
               //console.log(this.responseText);
           }
           
-          xhr.open("GET", "http://localhost:8080/books",true);
+          xhr.open("GET", "http://localhost:8080/bookcopies",true);
           xhr.send();
       }
   
@@ -124,40 +114,6 @@
               alert("Er is iets fouts gegaan");
             });
         }
-
-        function addBookCopies() {
-
-         // Formulier uitlezen
-          let bookIdInvoer = document.getElementById("bookid").value;
-          let amountInvoer = document.getElementById("amount").value;
-  
-          // Javascript object
-          let newBook = {
-            bookId: bookIdInvoer,
-          };
-
-          amountInvoer = Number(amountInvoer);
-  
-          // Fetch call
-          for (x=0; x<amountInvoer; x++){
-            fetch("http://localhost:8080/bookcopy/savebybookid", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newBook),
-          })
-            .then((res) => {
-              showAllBooks();
-              alert("Is goedgegaan");
-            })
-            .catch((error) => {
-              alert("Er is iets fouts gegaan");
-            });
-          }
-
-        }
-          
   
   
         function updateBook() {
@@ -218,7 +174,7 @@
             });
             
         }
-        showAllBooks();
+        showAllBookCopies();
   
   </script>
 </html>
