@@ -76,13 +76,14 @@
                                           </thead>`;
                       for (x=0; x<allBooks.length; x++){
                           eindstring +=`
-                                      <tr>    
-                                          <td class= {x}>${allBooks[x].id}</td>
-                                          <td>${allBooks[x].title}</td> 
+                                      <tr > 
+                                          <td id=${x}>${allBooks[x].id}</td>
+                                          <td >${allBooks[x].title}</td> 
                                               <td>${allBooks[x].author}</td>
                                               <td>${allBooks[x].isbn}</td>     
-                                              <td><button onclick = "addBookCopies()" class="editbtn">add</button></td>  
-                                      </tr>`;
+                                              <td><button onclick = "addBookCopies2(${x})" class="editbtn">add</button></td>  
+                                      </tr>`; 
+
                       }
                       eindstring += "</table>";
                       document.getElementById("allBooksTable").innerHTML = eindstring;
@@ -125,6 +126,11 @@
             });
         }
 
+        function addBookCopies2(x){
+                                       //var x = document.getElementsByTagName("td");
+                                      alert( document.getElementById(x).innerHTML)
+                                   }
+
         function addBookCopies() {
 
          // Formulier uitlezen
@@ -158,7 +164,7 @@
 
         }
           
-  
+       
   
         function updateBook() {
           // Formulier uitlezen
