@@ -105,7 +105,7 @@
 body {
     background-color: rgb(239, 244, 246);
   }
-  
+
 /* navbar styling
 /* Add a black background color to the top navigation */
 .topnav {
@@ -133,4 +133,8 @@ body {
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
+}
+
+.topnav a.active:hover {
+  background-color: #049962;
 }

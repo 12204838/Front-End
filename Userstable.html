@@ -10,10 +10,25 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Users</h1>
-    <h2>User table</h2>
-    <button type="button" onclick="showUsers()">Show Users</button>
-    <table>
+    <header class="w3-container w3-teal">
+  
+        <h1>
+          Working Talent
+        </h1>
+      
+       </header>
+
+       <div class="topnav">
+        <a class="" href="booktable.html">Book table</a>
+        <a class="" href="bookcopy.html">Copy table</a>
+        <a class="active" href="Userstable.html"> User Table</a>
+      </div>
+
+      <div class = "container" >
+  
+  
+  
+    <table class = "styled-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,31 +45,72 @@
 
         </tbody>
     </table>
+</div>
+<div class = "flex-container">
+    <div class = "container">
+        <h2>Add users</h3>
+            <input type="text" id="id" placeholder = "user ID">
+            <br>
+            <input type="text" id="name" placeholder = "name">
+            <br>
+            <input type="text" id="email" placeholder = "email">
+            <br>
+            <input type="text" id="username" placeholder = "username">
+            <br>
+            <input type="text" id="password" placeholder = "password">
+    </div>
+    <div class = "container">
+        <button class= "button" type="button" onclick = "addUser()">add user</button>
+        <br>
+        <button class= "button" type="button" onclick ="updateUser()">update User</button>
+        <br>
+        <button class= "button" type="button" onclick ="deleteUser()">delete User</button>
+    </div>
+    <div class = "container" >
+        <h3>active
+            <label class="switch">
+                <input type="checkbox" id="isactive" >
+                <span class="slider round"></span>
+              </label>
+            </h3>
+              <h3>admin
+              <label class="switch">
+                <input type="checkbox" id="isadmin">
+                <span class="slider round"></span>
+              </label>
+            </h3>
+    </div>
+           
 
-    <h2>Add users</h3>
-    <input type="text" id="id" placeholder = "user ID">
-    <input type="text" id="name" placeholder = "name">
-    <input type="text" id="email" placeholder = "email">
-    <input type="text" id="username" placeholder = "username">
-    <input type="text" id="password" placeholder = "password">
-    <h3>active
-    <label class="switch">
-        <input type="checkbox" id="isactive" >
-        <span class="slider round"></span>
-      </label>
-    </h3>
-      <h3>admin
-      <label class="switch">
-        <input type="checkbox" id="isadmin">
-        <span class="slider round"></span>
-      </label>
-    </h3>
-    <button type="button" onclick = "addUser()">add user</button>
-    <button type="button" onclick ="updateUser()">update User</button>
-    <button type="button" onclick ="deleteUser()">delete User</button>
+</div>
 </body>
 <script>
+function showUsers(){
+        fetch('http://localhost:8080/users')
+        .then(res => res.json())
+        .then(data =>{
+            console.log('het is gelukt');
+            
+            console.log(data);
 
+            let usersHtml = '';
+            data.forEach(user => {
+                usersHtml += `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.active}</td>
+                    <td>${user.admin}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.password}</td>
+                    <td>${user.username}</td>
+                    <td><button type= "button" onclick = "addBookCopies2(${user.id})" class="editbtn">add</button></td>
+                </tr>
+                `
+            });
+            document.getElementById('users-data').innerHTML = usersHtml
+        })
+    }
     function deleteUser(){
         let idInput = document.getElementById("id").value;
 
@@ -64,11 +120,16 @@
         })
         .then((res) => {
             alert("Is goedgegaan");
+            showUsers();
         })
         .catch((error) =>{
             alert("Er is iets fouts gegaan");
         });
 
+    }
+    function addBookCopies2(x){ 
+
+        alert(x);
     }
 
     function updateUser(){
@@ -102,6 +163,7 @@
         })
         .then((res) => {
             alert("Is goedgegaan");
+            showUsers();
         })
         .catch((error) =>{
             alert("Er is iets fouts gegaan");
@@ -139,36 +201,15 @@
         })
         .then((res) => {
             alert("Is goedgegaan");
+            showUsers();
+            
         })
         .catch((error) =>{
             alert("Er is iets fouts gegaan");
         });
-    }
-    function showUsers(){
-        fetch('http://localhost:8080/users')
-        .then(res => res.json())
-        .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
 
-            let usersHtml = '';
-            data.forEach(user => {
-                usersHtml += `
-                <tr>
-                    <td>${user.id}</td>
-                    <td>${user.active}</td>
-                    <td>${user.admin}</td>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>${user.password}</td>
-                    <td>${user.username}</td>
-                </tr>
-                `
-            });
-            document.getElementById('users-data').innerHTML = usersHtml
-        })
     }
+    
     showUsers();
 
 </script>
