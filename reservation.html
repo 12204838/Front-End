@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="booktablestyle.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
+ <header class="w3-container w3-teal">
     <h1>Reservations</h1>
+</header>
     <h2> Reservation table</h2>
-    <button type="button" onclick="showReservations()"> show reservations</button>
-<table>
+    <button class ="add-book-button button" type="button" onclick="showReservations()"> show reservations</button>
+<table class="styled-table">
     <thead>
     <tr>
         <th>Reservation ID</th>
@@ -26,18 +31,69 @@
 
 </table>
 <h2>Add Reservation</h2>
+<div class = "flex-container">
+    <div class = "container">
 <input type="number" id="id" placeholder = "reservation ID">
 <input type="number" id="bookId" placeholder = "Book ID">
 <input type="number" id="userId" placeholder = "User ID">
+</div>
+</div>
 <h3>approved
 <label class="switch">
     <input type="checkbox" id="approved">
     <span class="slider round"></span>
   </label>
 </h3>
-<button type="button" onclick = "addReservation()">add reservation</button>
+<div class = "container">
+<button class ="add-book-button button" type="button" onclick = "addReservation()">add reservation</button>
+<button class ="add-book-button button" type="button" onclick ="approveReservation()">Approve reservation</button>
+<button class ="add-book-button button" type="button" onclick ="deleteReservation()">delete reservation</button>
+</div>
 </body>
 <script>
+function deleteReservation(){
+    let idInput = document.getElementById("id").value;
+
+         // Delete
+         fetch(`http://localhost:8080/reservations/delete/${idInput}`,{
+            method: "DELETE",
+        })
+        .then((res) => {
+            alert("Is goedgegaan");
+        })
+        .catch((error) =>{
+            alert("Er is iets fouts gegaan");
+        });
+}
+
+
+function approveReservation(){
+        //formulier uitlezen
+        let idInput = document.getElementById("id").value;
+        let isApprovedInput = document.getElementById("approved").checked;
+
+        // Javascript object
+        let newReservation = {
+            approved: isApprovedInput,
+        };
+
+        // Fetch call
+        fetch(`http://localhost:8080/reservations/updatebybookidanduserid/${idInput}`,{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newReservation),
+        })
+        .then((res) => {
+            alert("Is goedgegaan");
+        })
+        .catch((error) =>{
+            alert("Er is iets fouts gegaan");
+        });
+    }
+
+
     function addReservation(){
         //formulier uitlezen
         let bookIdInput = document.getElementById("bookId").value;
@@ -89,7 +145,9 @@ function showReservations(){
             });
             document.getElementById('reservations-data').innerHTML = reservationsHtml
         })
+
     }
+    showReservations();
 </script>
 <style>
     .switch {
