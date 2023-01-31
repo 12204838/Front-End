@@ -11,11 +11,19 @@
 </head>
 
 <body>
+
  <header class="w3-container w3-teal">
+  
   <h1>
     Working Talent Book Table
   </h1>
+
  </header>
+
+ <div class="topnav">
+  <a class="active" href="bookcopy.html">Copy table</a>
+  <a class="active" href="UsersTable.html"> User Table</a>
+</div>
   <div class = "container" id="allBooksTable" ></div>
   
   
@@ -33,9 +41,6 @@
       <label for="quantity">ISBN</label>
       <input type="text" id="quantity">
       <br>
-      <label for="amount">amount</label>
-      <input type="text" id="amount">
-      <br>
     </div>
     
     <div class = "container">
@@ -44,8 +49,6 @@
       <button class= "update-book-button button" type = "button" onclick = "updateBook()">edit book</button>
       <br>
       <button class= "delete-book-button button" type = "button" onclick = "deleteBook()">delete book</button>
-      <br>
-      <button class= "delete-book-button button" type = "button" onclick = " addBookCopies()">add bookcopies</button>
     </div>
   </div>
 
@@ -81,7 +84,7 @@
                                           <td >${allBooks[x].title}</td> 
                                               <td>${allBooks[x].author}</td>
                                               <td>${allBooks[x].isbn}</td>     
-                                              <td><button onclick = "addBookCopies2(${x})" class="editbtn">add</button></td>  
+                                              <td><button type= "button" onclick = "addBookCopies2(${x})" class="editbtn">add</button></td>  
                                       </tr>`; 
 
                       }
@@ -126,17 +129,22 @@
             });
         }
 
-        function addBookCopies2(x){
-                                       //var x = document.getElementsByTagName("td");
-                                      alert( document.getElementById(x).innerHTML)
-                                   }
-
-        function addBookCopies() {
-
-         // Formulier uitlezen
-          let bookIdInvoer = document.getElementById("bookid").value;
-          let amountInvoer = document.getElementById("amount").value;
+        function addBookCopiesPrompt() {
+  let text;
+  let amount = prompt("Please enter the amount:", "0");
+  if (amount == null || amount == "") {
+    text = "User cancelled the prompt.";
+  } else {
+    return amount
+  }
   
+}
+        function addBookCopies2(x){ 
+
+          amountInvoer = addBookCopiesPrompt()        
+         // Formulier uitlezen
+          let bookIdInvoer = document.getElementById(x).innerHTML;
+          console.log(bookIdInvoer)
           // Javascript object
           let newBook = {
             bookId: bookIdInvoer,
@@ -145,7 +153,7 @@
           amountInvoer = Number(amountInvoer);
   
           // Fetch call
-          for (x=0; x<amountInvoer; x++){
+          for (y=0; y<amountInvoer; y++){
             fetch("http://localhost:8080/bookcopy/savebybookid", {
             method: "POST",
             headers: {
