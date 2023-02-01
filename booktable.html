@@ -25,8 +25,22 @@
   <a class="" href="bookcopy.html">Copy table</a>
   <a class="" href="Userstable.html"> User Table</a>
 </div>
-  <div class = "container" id="allBooksTable" >
+  <div class = "container" >
+    <table class = "styled-table">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Isbn</th>
+              <th>Add copy</th>
+          </tr>
+      </thead>
+      <tbody id="allBooksTable">
+          
 
+      </tbody>
+  </table>
   </div>
   
   
@@ -66,38 +80,30 @@
 
   <script >
       function showAllBooks(){
-          var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function(){
-                  console.log(this.responseText);
-                  var allBooks = JSON.parse(this.responseText);
-                  var eindstring =`<table id = "booktable" class ="styled-table">
-                                              <thead>
-                                                  <tr>
-                                                      <th>ID</th>
-                                                      <th>Title</th>
-                                                      <th>Author Name</th>
-                                                      <th>ISBN</th>
-                                                      <th>Add Book</th>
-                                                  </tr>
-                                          </thead>`;
-                      for (x=0; x<allBooks.length; x++){
-                          eindstring +=`
+        fetch('http://localhost:8080/books')
+        .then(res => res.json())
+        .then(data =>{
+            console.log('het is gelukt');
+            
+            console.log(data);
+
+            let booksHtml = '';
+            data.forEach(book => {
+                booksHtml += `
                                       <tr > 
-                                          <td id=${x}>${allBooks[x].id}</td>
-                                          <td >${allBooks[x].title}</td> 
-                                              <td>${allBooks[x].author}</td>
-                                              <td>${allBooks[x].isbn}</td>     
-                                              <td><button type= "button" onclick = "addBookCopies2(${x})" class="editbtn">add</button></td>  
+                                          <td >${book.id}</td>
+                                          <td >${book.title}</td> 
+                                              <td>${book.author}</td>
+                                              <td>${book.isbn}</td>     
+                                              <td><button type= "button" onclick = "addBookCopies2(${book.id})" class="editbtn">add</button></td>  
                                       </tr>`; 
 
-                      }
-                      eindstring += "</table>";
-                      document.getElementById("allBooksTable").innerHTML = eindstring;
+                      });
+
+                      document.getElementById("allBooksTable").innerHTML = booksHtml;
               //console.log(this.responseText);
-          }
+          })
           
-          xhr.open("GET", "http://localhost:8080/books",true);
-          xhr.send();
       }
   
       function addBook() {
@@ -146,7 +152,7 @@
 
           amountInvoer = addBookCopiesPrompt()        
          // Formulier uitlezen
-          let bookIdInvoer = document.getElementById(x).innerHTML;
+          let bookIdInvoer = x;
           console.log(bookIdInvoer)
           // Javascript object
           let newBook = {
