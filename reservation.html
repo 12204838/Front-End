@@ -2,75 +2,82 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="booktablestyle.css">
+    <link rel="stylesheet" href="switch.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+    
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
- <header class="w3-container w3-teal">
-    <h1>Reservations</h1>
-</header>
-    <h2> Reservation table</h2>
-    <button class ="add-book-button button" type="button" onclick="showReservations()"> show reservations</button>
-<table class="styled-table">
-    <thead>
-    <tr>
-        <th>Reservation ID</th>
-        <th>Book title</th>
-        <th>Employee</th>
-        <th>Approved</th>
-    </tr>
-    </thead>
-    <tbody id="reservations-data">
+    <header class="w3-container w3-teal">
+        <h1>Working Talent</h1>
+    </header>
+    
+    <div class="topnav">
+        <a class="" href="booktable.html">Book table</a>
+        <a class="" href="bookcopy.html">Copy table</a>
+        <a class="" href="Userstable.html">Users table</a>
+        <a class="active" href="reservation.html"> Reservation table</a>
+    </div>
 
-
-    </tbody>
-
-</table>
-<h2>Add Reservation</h2>
-<div class = "flex-container">
-    <div class = "container">
-<input type="number" id="id" placeholder = "reservation ID">
-<input type="number" id="bookId" placeholder = "Book ID">
-<input type="number" id="userId" placeholder = "User ID">
-</div>
-</div>
-<h3>approved
-<label class="switch">
-    <input type="checkbox" id="approved">
-    <span class="slider round"></span>
-  </label>
-</h3>
-<div class = "container">
-<button class ="add-book-button button" type="button" onclick = "addReservation()">add reservation</button>
-<button class ="add-book-button button" type="button" onclick ="approveReservation()">Approve reservation</button>
-<button class ="add-book-button button" type="button" onclick ="deleteReservation()">delete reservation</button>
-</div>
+    
+    <div class = "container">    
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Book title</th>
+                    <th>Employee</th>
+                    <th>Approved</th>
+                    <th>Approve?</th>
+                    <th>Delete?</th>
+                </tr>
+            </thead>
+            
+            <tbody id="reservations-data">
+                
+            </tbody>
+        </table>
+    </div>
+    
+    <div class = "flex-container">
+        <div class = "container">
+            <input type="number" id="id" placeholder = "reservation ID">
+            <input type="number" id="bookId" placeholder = "Book ID">
+            <input type="number" id="userId" placeholder = "User ID">
+            Approved
+            <label class="switch">
+                <input type="checkbox" id="approved">
+                <span class="slider round"></span>  
+            </label>
+        </div>
+        
+        <div class = "container">
+            <button class ="add-book-button button" type="button" onclick = "addReservation()">add reservation</button>
+        </div>
+    </div>
 </body>
-<script>
-function deleteReservation(){
-    let idInput = document.getElementById("id").value;
 
-         // Delete
-         fetch(`http://localhost:8080/reservations/delete/${idInput}`,{
-            method: "DELETE",
-        })
-        .then((res) => {
-            alert("Is goedgegaan");
-        })
-        .catch((error) =>{
-            alert("Er is iets fouts gegaan");
+<script>
+function deleteReservation(reservationId){
+    let idInput = reservationId;
+
+    // Delete
+    fetch(`http://localhost:8080/reservation/delete/${idInput}`,{
+    method: "DELETE",
+    })
+    .then((res) => {
+            showReservations();
         });
 }
 
-
-function approveReservation(){
+function approveReservation(reservationId){
         //formulier uitlezen
-        let idInput = document.getElementById("id").value;
-        let isApprovedInput = document.getElementById("approved").checked;
+        let idInput = reservationId;
+        let isApprovedInput = true;
 
         // Javascript object
         let newReservation = {
@@ -78,7 +85,7 @@ function approveReservation(){
         };
 
         // Fetch call
-        fetch(`http://localhost:8080/reservations/updatebybookidanduserid/${idInput}`,{
+        fetch(`http://localhost:8080/reservation/updatebybookidanduserid/${idInput}`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -86,10 +93,7 @@ function approveReservation(){
             body: JSON.stringify(newReservation),
         })
         .then((res) => {
-            alert("Is goedgegaan");
-        })
-        .catch((error) =>{
-            alert("Er is iets fouts gegaan");
+            showReservations();
         });
     }
 
@@ -116,22 +120,17 @@ function approveReservation(){
             body: JSON.stringify(newReservation),
         })
         .then((res) => {
-            alert("Is goedgegaan");
-        })
-        .catch((error) =>{
-            alert("Er is iets fouts gegaan");
+            showReservations();
         });
     }
 
-    // Function to show reservations
+/**
+* This method displays all reservations from the reservations table.
+*/
 function showReservations(){
         fetch('http://localhost:8080/reservations')
         .then(res => res.json())
         .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
-
             let reservationsHtml = '';
             data.forEach(reservation => {
                 reservationsHtml += `
@@ -140,77 +139,14 @@ function showReservations(){
                     <td>${reservation.bookTitle}</td>
                     <td>${reservation.nameEmployee}</td>
                     <td>${reservation.approved}</td>
+                    <td><button class ="add-book-button button" type="button" onclick="approveReservation(${reservation.id})">Approve</button></td>
+                    <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                 </tr>
                 `
             });
             document.getElementById('reservations-data').innerHTML = reservationsHtml
         })
-
-    }
+  }
     showReservations();
 </script>
-<style>
-    .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-</style>
 </html>
