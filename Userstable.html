@@ -22,6 +22,7 @@
         <a class="" href="booktable.html">Book table</a>
         <a class="" href="bookcopy.html">Copy table</a>
         <a class="active" href="Userstable.html"> User Table</a>
+        <a class="active" href="reservation.html"> User Table</a>
       </div>
 
       <div class = "container" >
@@ -85,6 +86,13 @@
 </div>
 </body>
 <script>
+    /**
+     * Comment added by Omur
+     * This function shows the users in a table.
+     * When this function is called, it auto-generates a table with:
+     * user ID, Active?, Admin?, name, email, password, username
+     * and a button to assign bookcopy to the user.
+     */
 function showUsers(){
         fetch('http://localhost:8080/users')
         .then(res => res.json())
@@ -111,6 +119,11 @@ function showUsers(){
             document.getElementById('users-data').innerHTML = usersHtml
         })
     }
+     /**
+     * Comment added by Omur
+     * This function deletes an user.
+     * When this function is called it deletes an user with the assigned id
+     */
     function deleteUser(){
         let idInput = document.getElementById("id").value;
 
@@ -127,11 +140,21 @@ function showUsers(){
         });
 
     }
+     /**
+     * Comment added by Omur
+     * pop-up with x
+     */
     function addBookCopies2(x){ 
 
         alert(x);
     }
 
+    /**
+     * Comment added by Omur
+     * This function makes it possible to update an User.
+     * The admin can change the users name, email, username, password,
+     * and het can choose to set the user on active or make him an admin.
+     */
     function updateUser(){
         //formulier uitlezen
 
@@ -170,7 +193,11 @@ function showUsers(){
         });
     }
 
-
+    /**
+     * Comment added by Omur
+     * This function adds an User.
+     * The admin can add an user with this function.
+     */
 
     function addUser(){
         //formulier uitlezen
