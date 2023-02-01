@@ -38,28 +38,6 @@
   
   
   <div class = "flex-container">
-    <div class = "container">
-      <label for="bookid">Book ID</label>
-      <input  id="bookid" type="text">
-      <br>
-      <label for="bookName">Title</label>
-      <input type="text" id="bookName">
-      <br>
-      <label for="authorName">author</label>
-      <input id="authorName" type="text">
-      <br>
-      <label for="quantity">ISBN</label>
-      <input type="text" id="quantity">
-      <br>
-    </div>
-    
-    <div class = "container">
-      <button class= "add-book-button button"type="button" onclick="addBook()">add book</button>
-      <br>
-      <button class= "update-book-button button" type = "button" onclick = "updateBook()">edit book</button>
-      <br>
-      <button class= "delete-book-button button" type = "button" onclick = "deleteBook()">delete book</button>
-    </div>
   </div>
 
   <footer class="w3-container w3-teal">
@@ -72,6 +50,15 @@
 
 
   <script >
+
+    /**
+     * This method generates the table of the book copies:
+     * The bookcopy Id and the bookId.
+     * 
+     * 
+     * 
+     */
+
       function showAllBookCopies(){
         fetch('http://localhost:8080/bookcopies')
         .then(res => res.json())
@@ -90,98 +77,7 @@
               //console.log(this.responseText);
           })
          }
-  
-      function addBook() {
-          // Formulier uitlezen
-          let bookIdInvoer = document.getElementById("bookid").value;
-          let bookNameInvoer = document.getElementById("bookName").value;
-          let authorNameInvoer = document.getElementById("authorName").value;
-          let ISBNInvoer = document.getElementById("quantity").value;
-  
-          // Javascript object
-          let newBook = {
-            id: bookIdInvoer,
-            title: bookNameInvoer,
-            author: authorNameInvoer,
-            isbn: ISBNInvoer,
-          };
-  
-          // Fetch call
-          fetch("http://localhost:8080/book/save", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newBook),
-          })
-            .then((res) => {
-              showAllBooks();
-              alert("Is goedgegaan");
-            })
-            .catch((error) => {
-              alert("Er is iets fouts gegaan");
-            });
-        }
-  
-  
-        function updateBook() {
-          // Formulier uitlezen
-          let bookIdInvoer = document.getElementById("bookid").value;
-          let bookNameInvoer = document.getElementById("bookName").value;
-          let authorNameInvoer = document.getElementById("authorName").value;
-          let ISBNInvoer = document.getElementById("quantity").value;
-          // Javascript object
-          let newInfo = {
-            id: bookIdInvoer,
-            title: bookNameInvoer,
-            author: authorNameInvoer,
-            isbn: ISBNInvoer,
-          };
-  
-          // Fetch call
-          fetch(`http://localhost:8080/book/update/${bookIdInvoer}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newInfo),
-          })
-            .then((res) => {
-                
-              alert("Is goedgegaan");
-              showAllBooks();
-            })
-            .catch((error) => {
-              alert("Er is iets fouts gegaan");
-            });
-        }
-  
-        function deleteBook() {
-          // Formulier uitlezen
-          let bookIdInvoer = document.getElementById("bookid").value;
-          // Javascript object
-          let delInfo = {
-            id: bookIdInvoer,
-          };
-  
-          // Fetch call
-          fetch(`http://localhost:8080/book/delete/${bookIdInvoer}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(delInfo),
-          })
-            .then((res) => {
-                
-              alert("Is goedgegaan");
-              showAllBooks();
-            })
-            .catch((error) => {
-              alert("Er is iets fouts gegaan");
-            });
-            
-        }
+
         showAllBookCopies();
   
   </script>
