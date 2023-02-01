@@ -79,6 +79,10 @@
 
 
   <script >
+
+    /**
+	   * This shows all books in the book repository and fills booktable with content.
+	  */
       function showAllBooks(){
         fetch('http://localhost:8080/books')
         .then(res => res.json())
@@ -103,9 +107,13 @@
                       document.getElementById("allBooksTable").innerHTML = booksHtml;
               //console.log(this.responseText);
           })
-          
-      }
-  
+       }
+
+      /**
+       * This method gets information of a book object and saves in the book repository.
+       * 
+       * @param Book Object that contains the bookId, author, title, isbn, amount of bookcopies.
+       */
       function addBook() {
           // Formulier uitlezen
           let bookIdInvoer = document.getElementById("bookid").value;
@@ -138,16 +146,28 @@
             });
         }
 
+         /**
+        * This method gets information from text and saves this variable: amount.
+         * 
+         * @return returns a variable amount 
+         */
         function addBookCopiesPrompt() {
-  let text;
-  let amount = prompt("Please enter the amount:", "0");
-  if (amount == null || amount == "") {
-    text = "User cancelled the prompt.";
-  } else {
-    return amount
-  }
+          let text;
+          let amount = prompt("Please enter the amount:", "0");
+          if (amount == null || amount == "") {
+            text = "User cancelled the prompt.";
+          } else {
+            return amount
+          }
   
-}
+        }   
+
+        /**
+        * This method saves an bookcopy in the bookcopy table by book id.
+        * it thas this by the amount of times receiven from AddBookCopiesPrompt
+        * 
+        * @param Book ID received from the booktable
+        */
         function addBookCopies2(x){ 
 
           amountInvoer = addBookCopiesPrompt()        
@@ -180,9 +200,12 @@
           }
 
         }
-          
-       
-  
+        
+
+        /**
+        * This method updates a book in the book repository based on information from the 
+        * front-end inpunt fields.
+        */
         function updateBook() {
           // Formulier uitlezen
           let bookIdInvoer = document.getElementById("bookid").value;
@@ -214,7 +237,11 @@
               alert("Er is iets fouts gegaan");
             });
         }
-  
+        
+        /**
+        * This method deletes a book from the book repository based on information from the 
+        * front-end inpunt fields.
+        */
         function deleteBook() {
           // Formulier uitlezen
           let bookIdInvoer = document.getElementById("bookid").value;
