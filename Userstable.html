@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="booktablestyle.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +32,7 @@
   
   
   
-    <table class = "styled-table">
+    <table class = "table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
@@ -48,6 +50,7 @@
         </tbody>
     </table>
 </div>
+
 <div class = "flex-container">
     <div class = "container">
         <h2>Add users</h3>
@@ -85,6 +88,40 @@
            
 
 </div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th>Booktitle</th>
+                </tr>
+            </thead>
+            <tbody id="bookcopiesdata">
+                
+
+            </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <script>
     /**
@@ -113,13 +150,48 @@ function showUsers(){
                     <td>${user.email}</td>
                     <td>${user.password}</td>
                     <td>${user.username}</td>
-                    <td><button type= "button" onclick = "addBookCopies2(${user.id})" class="editbtn">add</button></td>
+                    <td><button type= "button" onclick = "viewCopies(${user.id})" class="editbtn">add</button></td>
+                    <td><button type="button" class="btn btn-primary" onclick = "viewCopies(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button></td>
                 </tr>
                 `
             });
             document.getElementById('users-data').innerHTML = usersHtml
         })
     }
+
+    function viewBookIdPrompt() {
+          let text;
+          let amount = prompt("Please enter the bookid:", "0");
+          if (amount == null || amount == "") {
+            text = "User cancelled the prompt.";
+          } else {
+            return amount
+          }
+  
+        } 
+
+    function viewCopies(userid) {
+        let bookId = viewBookIdPrompt();
+
+        fetch(`http://localhost:8080/book/${bookId}/copies`)
+        .then((res) => res.json())
+        .then(data => {
+            let copiesHtml = ``
+
+            data.forEach(copy => {
+                copiesHtml += `
+                <tr>
+                    <td>${copy.bookTitle}</td>
+                </tr>
+                `
+            })
+
+            document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
+        })
+    }
+
      /**
      * Comment added by Omur
      * This function deletes an user.
