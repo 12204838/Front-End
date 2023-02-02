@@ -32,7 +32,7 @@
   
   
   
-    <table class = "table table-striped">
+    <table class = "table styled-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -42,6 +42,8 @@
                 <th>email</th>
                 <th>password</th>
                 <th>username</th>
+                <th>set admin</th>
+                <th>assign book</th>
             </tr>
         </thead>
         <tbody id="users-data">
@@ -89,10 +91,6 @@
 
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -109,19 +107,41 @@
                     <th>Booktitle</th>
                 </tr>
             </thead>
-            <tbody id="bookcopiesdata">
+            <tbody id="allBooksTable">
                 
 
             </tbody>
             </table>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
       </div>
     </div>
   </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="copyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class = "table table-striped">
+                <thead>
+                    <tr>
+                        <th>Bookcopy ID</th>
+                        <th>Assign Copy</th>
+                    </tr>
+                </thead>
+                <tbody id="bookcopiesdata">
+                    
+    
+                </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 <script>
     /**
@@ -151,8 +171,8 @@ function showUsers(){
                     <td>${user.password}</td>
                     <td>${user.username}</td>
                     <td><button type= "button" onclick = "viewCopies(${user.id})" class="editbtn">add</button></td>
-                    <td><button type="button" class="btn btn-primary" onclick = "viewCopies(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
+                    <td><button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Assign book copy
                     </button></td>
                 </tr>
                 `
@@ -171,10 +191,37 @@ function showUsers(){
           }
   
         } 
+     function showAllBooks(userId){
+        fetch('http://localhost:8080/books')
+        .then(res => res.json())
+        .then(data =>{
+            console.log('het is gelukt');
+            
+            console.log(data);
 
-    function viewCopies(userid) {
-        let bookId = viewBookIdPrompt();
+            let booksHtml = '';
+            data.forEach(book => {
+                booksHtml += `
+                                      <tr > 
+                                        <td>${book.id}</td> 
+                                          <td>${book.title}</td> 
+                                              <td>${book.author}</td>
+                                              <td>
+                                                <button class = button onclick = "viewCopies(${book.id},${userId})" data-bs-toggle="modal" data-bs-target="#copyModal"></button>
+                                                </td>
+                                      </tr>`; 
 
+                      });
+
+                      document.getElementById("allBooksTable").innerHTML = booksHtml;
+              //console.log(this.responseText);
+          })
+       }
+
+
+    function viewCopies(bookId,userId) {
+        console.log(bookId);
+        console.log(userId);
         fetch(`http://localhost:8080/book/${bookId}/copies`)
         .then((res) => res.json())
         .then(data => {
@@ -182,8 +229,9 @@ function showUsers(){
 
             data.forEach(copy => {
                 copiesHtml += `
-                <tr>
-                    <td>${copy.bookTitle}</td>
+                <tr > 
+                    <td>${copy.id}</td> 
+                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId})" data-bs-toggle="modal" data-bs-target="#ExampleModal"></button></td> 
                 </tr>
                 `
             })
@@ -191,6 +239,35 @@ function showUsers(){
             document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
         })
     }
+
+    function chooseCopy(copyId,userId) {
+        console.log(copyId);
+        console.log(userId);
+
+        let newBorrowedCopy = {
+            copyId: copyId,
+            userId: userId,
+            
+        };
+        fetch(`http://localhost:8080/user/${userId}/assign`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newBorrowedCopy),
+        })
+        .then((res) => {
+            alert("Is goedgegaan");
+            showUsers();
+            
+        })
+        .catch((error) =>{
+            alert("Er is iets fouts gegaan");
+        });
+
+
+        
+         }
 
      /**
      * Comment added by Omur
