@@ -33,6 +33,7 @@
                     <th>Startdate</th>
                     <th>Enddate</th>
                     <th>Userid</th>
+                    <th>Return</th>
                 </tr>
             </thead>
             <tbody id="borrowedcopytable">
@@ -63,7 +64,8 @@ function showAllBorrowedCopies(){
                                           <td >${borrowedcopy.bookCopyId}</td> 
                                               <td>${borrowedcopy.startDate}</td>
                                               <td>${borrowedcopy.endDate}</td> 
-                                              <td>${borrowedcopy.userId}</td>      
+                                              <td>${borrowedcopy.userId}</td>
+                                              <td><button class ="add-book-button button" type="button" onclick ="returnBook(${borrowedcopy.id})">Return</button></td>     
                                       </tr>`; 
 
                       });
@@ -73,6 +75,15 @@ function showAllBorrowedCopies(){
           })
        }
        showAllBorrowedCopies()
+
+function returnBook(borrowedcopyid){
+    fetch(`http://localhost:8080/borrowedcopy/${borrowedcopyid}/return`, {
+        method: "PUT"
+    })
+    .then((res) => {
+        showAllBorrowedCopies();
+    });
+}
 
 
 </script>
