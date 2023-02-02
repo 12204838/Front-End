@@ -19,8 +19,9 @@
     <div class="topnav">
         <a class="" href="booktable.html">Book table</a>
         <a class="" href="bookcopy.html">Copy table</a>
-        <a class="" href="Userstable.html">Users table</a>
+        <a class="" href="userstable.html">Users table</a>
         <a class="active" > Reservation table</a>
+        <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
     </div>
 
     
@@ -63,10 +64,10 @@
 
 <script>
 function deleteReservation(reservationId){
-    let idInput = reservationId;
+
 
     // Delete
-    fetch(`http://localhost:8080/reservation/delete/${idInput}`,{
+    fetch(`http://localhost:8080/reservation/${reservationId}/deny`,{
     method: "DELETE",
     })
     .then((res) => {
@@ -74,18 +75,33 @@ function deleteReservation(reservationId){
         });
 }
 
-function approveReservation(reservationId){
-        //formulier uitlezen
-        let idInput = reservationId;
-        let isApprovedInput = true;
 
+function addBookCopyIdPrompt() {
+          let text;
+          let amount = prompt("Please enter the bookcopyid:", "0");
+          if (amount == null || amount == "") {
+            text = "User cancelled the prompt.";
+          } else {
+            return amount
+          }
+  
+        } 
+
+function approveReservation(reservationId,userId){
+    amount = addBookCopyIdPrompt() 
+    //formulier uitlezen
+
+        let isApprovedInput = true;
+        let bookCopyIdInput = amount
         // Javascript object
         let newReservation = {
-            approved: isApprovedInput,
+            bookCopyId: bookCopyIdInput,
+            userId: 1,
         };
 
+        
         // Fetch call
-        fetch(`http://localhost:8080/reservation/updatebybookidanduserid/${idInput}`,{
+        fetch(`http://localhost:8080/reservation/${reservationId}/approve`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -94,7 +110,11 @@ function approveReservation(reservationId){
         })
         .then((res) => {
             showReservations();
+            
         });
+
+       
+
     }
 
 
@@ -139,7 +159,7 @@ function showReservations(){
                     <td>${reservation.bookTitle}</td>
                     <td>${reservation.nameEmployee}</td>
                     <td>${reservation.approved}</td>
-                    <td><button class ="add-book-button button" type="button" onclick="approveReservation(${reservation.id})">Approve</button></td>
+                    <td><button class ="add-book-button button" type="button" onclick="approveReservation(${reservation.id},${reservation.userId})">Approve</button></td>
                     <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                 </tr>
                 `
