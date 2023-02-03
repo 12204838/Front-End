@@ -143,11 +143,9 @@
             body: JSON.stringify(newBook),
           })
             .then((res) => {
-              showAllBooks();
-              alert("Is goedgegaan");
+              showAllBooks();             
             })
             .catch((error) => {
-              alert("Er is iets fouts gegaan");
             });
         }
 
@@ -178,7 +176,6 @@
           amountInvoer = addBookCopiesPrompt()        
          // Formulier uitlezen
           let bookIdInvoer = x;
-          console.log(bookIdInvoer)
           // Javascript object
           let newBook = {
             bookId: bookIdInvoer,
@@ -196,8 +193,7 @@
             body: JSON.stringify(newBook),
           })
             .then((res) => {
-              showAllBooks();
-              alert("Is goedgegaan");
+              showAllBooks();           
             })
             .catch((error) => {
               alert("Er is iets fouts gegaan");
@@ -234,8 +230,6 @@
             body: JSON.stringify(newInfo),
           })
             .then((res) => {
-                
-              alert("Is goedgegaan");
               showAllBooks();
             })
             .catch((error) => {
@@ -264,8 +258,6 @@
             body: JSON.stringify(delInfo),
           })
             .then((res) => {
-                
-              alert("Is goedgegaan");
               showAllBooks();
             })
             .catch((error) => {

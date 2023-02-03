@@ -54,9 +54,6 @@ function showAllBorrowedCopies(){
         fetch('http://localhost:8080/borrowedcopies')
         .then(res => res.json())
         .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
 
             let borrowedcopiesHtml = '';
             data.forEach(borrowedcopy => {
