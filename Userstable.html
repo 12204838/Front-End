@@ -245,8 +245,8 @@ function showUsers(){
         console.log(userId);
 
         let newBorrowedCopy = {
-            copyId: copyId,
-            userId: userId,
+            bookCopyId: Number(copyId),
+            userId: Number(userId),
             
         };
         fetch(`http://localhost:8080/user/${userId}/assign`,{
