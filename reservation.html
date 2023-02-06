@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="booktablestyle.css">
     <link rel="stylesheet" href="switch.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
-    
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,17 +22,17 @@
     <header class="w3-container w3-teal">
         <h1>Working Talent</h1>
     </header>
-    
+
     <div class="topnav">
         <a class="" href="booktable.html">Book table</a>
         <a class="" href="bookcopy.html">Copy table</a>
         <a class="" href="userstable.html">Users table</a>
-        <a class="active" > Reservation table</a>
+        <a class="active"> Reservation table</a>
         <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
     </div>
 
-    
-    <div class = "container">    
+
+    <div class="container">
         <table class="table styled-table">
             <thead>
                 <tr>
@@ -40,88 +44,137 @@
                     <th>Delete?</th>
                 </tr>
             </thead>
-            
+
             <tbody id="reservations-data">
-                
+
             </tbody>
         </table>
     </div>
-    
-    <div class = "flex-container">
-        <div class = "container">
-            <input type="number" id="id" placeholder = "reservation ID">
-            <input type="number" id="bookId" placeholder = "Book ID">
-            <input type="number" id="userId" placeholder = "User ID">
+
+    <div class="flex-container">
+        <div class="container">
+            <input type="number" id="id" placeholder="reservation ID">
+            <input type="number" id="bookId" placeholder="Book ID">
+            <input type="number" id="userId" placeholder="User ID">
             Approved
             <label class="switch">
                 <input type="checkbox" id="approved">
-                <span class="slider round"></span>  
+                <span class="slider round"></span>
             </label>
         </div>
-        
-        <div class = "container">
-            <button class ="add-book-button button" type="button" onclick = "addReservation()">add reservation</button>
+
+        <div class="container">
+            <button class="add-book-button button" type="button" onclick="addReservation()">add reservation</button>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Bookcopy ID</th>
+                                <th>Assign Copy</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookcopiesdata">
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
 
 <script>
-function deleteReservation(reservationId){
+    function deleteReservation(reservationId) {
 
 
-    // Delete
-    fetch(`http://localhost:8080/reservation/${reservationId}/deny`,{
-    method: "DELETE",
-    })
-    .then((res) => {
-            showReservations();
-        });
-}
+        // Delete
+        fetch(`http://localhost:8080/reservation/${reservationId}/deny`, {
+            method: "DELETE",
+        })
+            .then((res) => {
+                showReservations();
+            });
+    }
+    function getIdByReservation(resId) {
+        let result;
+        fetch(`http://localhost:8080/reservation/${resId}/getbookiduseid`)
+            .then(res => res.json())
+            .then(data => {
+                result = data;
+                let userId = data.userId;
+                let bookId = data.bookId;
+                console.log(userId);
+                console.log(bookId);
+                getBookCopies(bookId, userId, resId);
+            })
 
+    }
 
-function addBookCopyIdPrompt() {
-          let text;
-          let amount = prompt("Please enter the bookcopyid:", "0");
-          if (amount == null || amount == "") {
-            text = "User cancelled the prompt.";
-          } else {
-            return amount
-          }
-  
-        } 
+    function getBookCopies(bookId, userId, reservationId) {
 
-function approveReservation(reservationId,userId){
-    amount = addBookCopyIdPrompt() 
-    //formulier uitlezen
+        console.log(userId);
+        console.log(bookId);
 
-        let isApprovedInput = true;
-        let bookCopyIdInput = amount
-        // Javascript object
-        let newReservation = {
-            bookCopyId: bookCopyIdInput,
-            userId: 1,
+        fetch(`http://localhost:8080/book/${bookId}/copies`)
+            .then((res) => res.json())
+            .then(data => {
+                let copiesHtml = ``
+
+                data.forEach(copy => {
+                    copiesHtml += `
+                <tr > 
+                    <td>${copy.id}</td> 
+                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId},${reservationId})" data-bs-toggle="modal" data-bs-target="#reservationModal"></button></td> 
+                </tr>
+                `
+                })
+
+                document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
+            })
+    }
+
+    function chooseCopy(copyId, userId, reservationId) {
+
+        let newBorrowedCopy = {
+            bookCopyId: Number(copyId),
+            userId: Number(userId),
+
         };
-
-        
-        // Fetch call
-        fetch(`http://localhost:8080/reservation/${reservationId}/approve`,{
+        fetch(`http://localhost:8080/reservation/${reservationId}/approve`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(newReservation),
+            body: JSON.stringify(newBorrowedCopy),
         })
-        .then((res) => {
-            showReservations();
-            
-        });
+            .then((res) => {
+                showReservations();
 
-       
+            })
+            .catch((error) => {
+                alert("Er is iets fouts gegaan");
+            });
+
+
 
     }
 
 
-    function addReservation(){
+    function addReservation() {
         //formulier uitlezen
         let bookIdInput = document.getElementById("bookId").value;
         let userIdInput = document.getElementById("userId").value;
@@ -135,41 +188,43 @@ function approveReservation(reservationId,userId){
         };
 
         // Fetch call
-        fetch('http://localhost:8080/reservation/savebybookanduserid',{
+        fetch('http://localhost:8080/reservation/savebybookanduserid', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(newReservation),
         })
-        .then((res) => {
-            showReservations();
-        });
+            .then((res) => {
+                showReservations();
+            });
     }
 
-/**
-* This method displays all reservations from the reservations table.
-*/
-function showReservations(){
+    /**
+    * This method displays all reservations from the reservations table.
+    */
+    function showReservations() {
         fetch('http://localhost:8080/reservations')
-        .then(res => res.json())
-        .then(data =>{
-            let reservationsHtml = '';
-            data.forEach(reservation => {
-                reservationsHtml += `
-                <tr>
-                    <td>${reservation.id}</td>
-                    <td>${reservation.bookTitle}</td>
-                    <td>${reservation.nameEmployee}</td>
-                    <td>${reservation.approved}</td>
-                    <td><button class ="add-book-button button" type="button" onclick="approveReservation(${reservation.id},${reservation.userId})">Approve</button></td>
-                    <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
-                </tr>
-                `
-            });
-            document.getElementById('reservations-data').innerHTML = reservationsHtml
-        })
-  }
+            .then(res => res.json())
+            .then(data => {
+                let reservationsHtml = '';
+                data.forEach(reservation => {
+                    reservationsHtml += `
+                        <tr>
+                        <td>${reservation.id}</td>
+                        <td>${reservation.bookTitle}</td>
+                        <td>${reservation.nameEmployee}</td>
+                        <td>${reservation.approved}</td>
+                        <td><button class ="add-book-button button" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        Approve</button></td>
+                        <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        </tr>
+                        `
+                });
+                document.getElementById('reservations-data').innerHTML = reservationsHtml
+            })
+    }
     showReservations();
 </script>
+
 </html>
