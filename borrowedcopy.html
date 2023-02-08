@@ -36,6 +36,7 @@
                     <th>Startdate</th>
                     <th>Enddate</th>
                     <th>Userid</th>
+                    <th>Return Book</th>
                 </tr>
             </thead>
             <tbody id="borrowedcopytable">
@@ -50,6 +51,9 @@
  </footer>
 </body>
 <script>
+             /**
+    * This method shows all borrowd copies in a table.
+    */
 function showAllBorrowedCopies(){
         fetch('http://localhost:8080/borrowedcopies')
         .then(res => res.json())
@@ -63,7 +67,8 @@ function showAllBorrowedCopies(){
                                           <td >${borrowedcopy.bookCopyId}</td> 
                                               <td>${borrowedcopy.startDate}</td>
                                               <td>${borrowedcopy.endDate}</td> 
-                                              <td>${borrowedcopy.userId}</td>      
+                                              <td>${borrowedcopy.userId}</td> 
+                                              <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>       
                                       </tr>`; 
 
                       });
@@ -72,6 +77,29 @@ function showAllBorrowedCopies(){
               //console.log(this.responseText);
           })
        }
+
+         /**
+    * This method updates a borrowdcopy and adds an end date.
+    */
+       function returnBook(borrowedCopyId){
+
+  
+          // Fetch call
+          fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
+            method: "PUT",
+
+          })
+            .then((res) => {
+                showAllBorrowedCopies()
+            })
+            .catch((error) => {
+              alert("Er is iets fouts gegaan");
+            });
+            
+       }
+
+
+
        showAllBorrowedCopies()
 
 
