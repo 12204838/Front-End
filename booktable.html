@@ -136,12 +136,8 @@
        * @param userId and bookId.
        */
        function makeReservation(bookId){
-
-        userId = userIdPrompt();
-        
         let newReservation = {
             bookId: bookId,
-            userId: userId,
         };
 
         // Fetch call
@@ -149,6 +145,7 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newReservation),
         })
