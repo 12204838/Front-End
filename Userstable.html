@@ -126,7 +126,12 @@
      * and a button to assign bookcopy to the user.
      */
 function showUsers(){
-        fetch('http://localhost:8080/users')
+        fetch('http://localhost:8080/users',{
+        method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            }})
         .then(res => res.json())
         .then(data =>{
 
