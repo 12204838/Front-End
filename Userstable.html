@@ -100,7 +100,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="modal-table">
           <table class = "table table-striped">
             <thead>
                 <tr>
@@ -116,32 +116,6 @@
       </div>
     </div>
   </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="copyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <table class = "table table-striped">
-                <thead>
-                    <tr>
-                        <th>Bookcopy ID</th>
-                        <th>Assign Copy</th>
-                    </tr>
-                </thead>
-                <tbody id="bookcopiesdata">
-                    
-    
-                </tbody>
-                </table>
-            </div>
-          </div>
-        </div>
-      </div>
 </body>
 <script>
     /**
@@ -193,21 +167,33 @@ function showUsers(){
         .then(res => res.json())
         .then(data =>{
 
-            let booksHtml = '';
+            let booksHtml = `<table class = "table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th style="display:none">Book Id</th>
+                                      <th>Booktitle</th>
+                                      <th>Author</th>
+                                      <th>Show available copies</th>
+                                  </tr>
+                              </thead>
+                              <tbody>`;
             data.forEach(book => {
                 booksHtml += `
                                       <tr > 
-                                        <td>${book.id}</td> 
+                                        <td style="display:none">${book.id}</td> 
                                           <td>${book.title}</td> 
                                               <td>${book.author}</td>
                                               <td>
-                                                <button class = button onclick = "viewCopies(${book.id},${userId})" data-bs-toggle="modal" data-bs-target="#copyModal"></button>
+                                                <button class = button onclick = "viewCopies(${book.id},${userId})" data-bs-target="#exampleModal">
+                                                  Show available copies  
+                                                </button>
                                                 </td>
                                       </tr>`; 
 
                       });
-
-                      document.getElementById("allBooksTable").innerHTML = booksHtml;
+                      booksHtml += `</tbody>
+                                    </table>`
+                      document.getElementById("modal-table").innerHTML = booksHtml;
               //console.log(this.responseText);
           })
        }
@@ -217,18 +203,32 @@ function showUsers(){
         fetch(`http://localhost:8080/book/${bookId}/availablecopies`)
         .then((res) => res.json())
         .then(data => {
-            let copiesHtml = ``
+            let copiesHtml = `<table class = "table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th style="display:none">BookCopy Id</th>
+                                      <th>Working Talent Id</th>
+                                      <th>Title</th>
+                                      <th>Assign</th>
+                                  </tr>
+                              </thead>
+                              <tbody>`
 
             data.forEach(copy => {
                 copiesHtml += `
-                <tr > 
-                    <td>${copy.id}</td> 
-                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId})" data-bs-toggle="modal" data-bs-target="#ExampleModal"></button></td> 
+                <tr >
+                    <td style="display:none">${copy.id}</td>
+                    <td>${copy.workingTalentId}</td>
+                    <td>${copy.bookTitle}</td>
+                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId})" data-bs-dismiss="modal" data-bs-target="#ExampleModal">
+                            Assign copy
+                          </button></td> 
                 </tr>
                 `
             })
-
-            document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
+            copiesHtml += `</tbody>
+                          </table>`
+            document.getElementById("modal-table").innerHTML = copiesHtml;
         })
     }
 
