@@ -65,7 +65,13 @@
      */
 
     function showAllBookCopies() {
-      fetch("http://localhost:8080/bookcopies")
+      fetch("http://localhost:8080/bookcopies",{
+      method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+        })
         .then((res) => res.json())
         .then((data) => {
           let bookcopiesHtml = "";
