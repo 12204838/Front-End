@@ -98,20 +98,57 @@
 </body>
 
 <script>
+    /**
+    * This method displays all reservations from the reservations table.
+    */
+    function showReservations() {
+        fetch('http://localhost:8080/reservations')
+            .then(res => res.json())
+            .then(data => {
+                let reservationsHtml = '';
+                data.forEach(reservation => {
+                    reservationsHtml += `
+                        <tr>
+                        <td>${reservation.id}</td>
+                        <td>${reservation.bookTitle}</td>
+                        <td>${reservation.nameEmployee}</td>
+                        <td>${reservation.approved}</td>
+                        <td><button class ="add-book-button button" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        Approve</button></td>
+                        <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        </tr>
+                        `
+                });
+                document.getElementById('reservations-data').innerHTML = reservationsHtml
+            })
+    }
+    
+    //Deletes reservations sends token to backend to check for admin rights.
     function deleteReservation(reservationId) {
 
 
         // Delete
         fetch(`http://localhost:8080/reservation/${reservationId}/deny`, {
-            method: "DELETE",
+            method: "DELETE", 
+             headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
         })
             .then((res) => {
                 showReservations();
             });
     }
+  //Checks UserID and BookId based on reservation Id. Sends token to backend to check for admin rights.
     function getIdByReservation(resId) {
         let result;
-        fetch(`http://localhost:8080/reservation/${resId}/getbookiduseid`)
+        fetch(`http://localhost:8080/reservation/${resId}/getbookiduserid`,{
+            method: "GET", 
+             headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+        })
             .then(res => res.json())
             .then(data => {
                 result = data;
@@ -129,7 +166,7 @@
         console.log(userId);
         console.log(bookId);
 
-        fetch(`http://localhost:8080/book/${bookId}/copies`)
+        fetch(`http://localhost:8080/book/${bookId}/availablecopies`)
             .then((res) => res.json())
             .then(data => {
                 let copiesHtml = ``
@@ -146,7 +183,7 @@
                 document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
             })
     }
-
+  //Approves reservations sends token to backend to check for admin rights.
     function chooseCopy(copyId, userId, reservationId) {
 
         let newBorrowedCopy = {
@@ -158,6 +195,7 @@
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newBorrowedCopy),
         })
@@ -199,32 +237,8 @@
                 showReservations();
             });
     }
-
-    /**
-    * This method displays all reservations from the reservations table.
-    */
-    function showReservations() {
-        fetch('http://localhost:8080/reservations')
-            .then(res => res.json())
-            .then(data => {
-                let reservationsHtml = '';
-                data.forEach(reservation => {
-                    reservationsHtml += `
-                        <tr>
-                        <td>${reservation.id}</td>
-                        <td>${reservation.bookTitle}</td>
-                        <td>${reservation.nameEmployee}</td>
-                        <td>${reservation.approved}</td>
-                        <td><button class ="add-book-button button" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
-                        Approve</button></td>
-                        <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
-                        </tr>
-                        `
-                });
-                document.getElementById('reservations-data').innerHTML = reservationsHtml
-            })
-    }
     showReservations();
+
 </script>
 
 </html>
