@@ -205,7 +205,13 @@ function showUsers(){
 
 
     function viewCopies(bookId,userId) {
-        fetch(`http://localhost:8080/book/${bookId}/availablecopies`)
+        fetch(`http://localhost:8080/book/${bookId}/availablecopies`, {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": localStorage.getItem('token')
+            }
+        })
         .then((res) => res.json())
         .then(data => {
             let copiesHtml = `<table class = "table table-striped">
