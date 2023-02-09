@@ -37,12 +37,12 @@
                           
                             <div class="container">
                               <label for="uname"><b>Username</b></label>
-                              <input type="text" placeholder="Enter Username" name="uname" required>
+                              <input type="text" placeholder="Enter Username" name="uname" id="username" required>
                           
                               <label for="psw"><b>Password</b></label>
-                              <input type="password" placeholder="Enter Password" name="psw" required>
+                              <input type="password" placeholder="Enter Password" name="psw" id="password" required>
                                   
-                              <button type="submit">Login</button>
+                              <button type="button" onclick="login()">Login</button>
                               <label>
                                 <input type="checkbox" checked="checked" name="remember"> Remember me
                               </label>
@@ -59,7 +59,30 @@
             </div>
         </div>
 
+<script>
+  function login() {
+    let dto = {
+      "email": document.getElementById("username").value,
+      "password": document.getElementById("password").value
+    }
 
+    fetch('http://localhost:8080/user/login', {
+      body: JSON.stringify(dto),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then(loginResponseDto => {
+      if (loginResponseDto.success) {
+        localStorage.setItem('token', loginResponseDto.token);
+      } else {
+        alert('Niet gelukt');
+      }
+    })
+  }
+</script>
 
 
 </body>
