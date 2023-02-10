@@ -172,7 +172,11 @@
         console.log(userId);
         console.log(bookId);
 
-        fetch(`http://localhost:8080/book/${bookId}/availablecopies`)
+        fetch(`http://localhost:8080/book/${bookId}/availablecopies`, {           
+         headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },})
             .then((res) => res.json())
             .then(data => {
                 let copiesHtml = ``
