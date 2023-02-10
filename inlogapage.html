@@ -60,6 +60,11 @@
         </div>
 
 <script>
+
+  /* functie checkt eerst of je kan inloggen
+  * daarna maakt hij een token aan
+  * daarna checkt hij of je admin bent of niet
+  */
   function login() {
     let dto = {
       "email": document.getElementById("username").value,
@@ -77,7 +82,15 @@
     .then(loginResponseDto => {
       if (loginResponseDto.success) {
         localStorage.setItem('token', loginResponseDto.token);
-        window.location.href = "userportal.html";
+
+        admin = JSON.parse(loginResponseDto.admin);
+        //als admin dan naar admin portal anders userportal
+         if (admin == true){
+          window.location.href = "adminportal.html";
+          }
+          else{
+          window.location.href = "userportal.html";
+          }
       } else {
         alert('Niet gelukt');
       }

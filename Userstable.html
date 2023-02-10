@@ -146,7 +146,11 @@ function showUsers(){
                     <td>${user.email}</td>
                     <td>${user.password}</td>
                     <td>${user.username}</td>
-                    <td><button type= "button" onclick = "viewCopies(${user.id})" class="editbtn">add</button></td>
+                    <td>  <label class="switch">
+                            <input type="checkbox" id="isadmin">
+                            <span class="slider round"></span>
+                          </label>
+                    </td>
                     <td><button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Assign book copy
                     </button></td>
