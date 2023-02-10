@@ -1,67 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head class="flex-container">
-    <link rel="stylesheet" href="booktablestyle.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <head class="flex-container">
+    <link rel="stylesheet" href="booktablestyle.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Borrowedcopy table</title>
-</head>
-<body>
+  </head>
+  <body>
     <header class="w3-container w3-teal">
-  
-        <h1>
-          Working Talent
-        </h1>
-      
-       </header>
-      
-       <div class="topnav">
-        <a class="" href="booktable.html" >Book table</a>
-        <a class="" href="bookcopy.html">Copy table</a>
-        <a class="" href="userstable.html"> User Table</a>
-        <a class="" href="reservation.html"> Reservation Table</a>
-        <a class="active" > Borrowedcopy Table</a>
-      </div>
-        <div class = "container" >
-          <table class = "table styled-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Bookcopyid</th>
-                    <th>Startdate</th>
-                    <th>Enddate</th>
-                    <th>Userid</th>
-                    <th>Return Book</th>
-                </tr>
-            </thead>
-            <tbody id="borrowedcopytable">
-                
-      
-            </tbody>
-        </table>
-        </div> 
-  <footer class="w3-container w3-teal">
-  <h5>Footer</h5>
- <p>Footer information goes here</p>
- </footer>
-</body>
-<script>
-             /**
-    * This method shows all borrowd copies in a table.
-    */
-function showAllBorrowedCopies(){
-        fetch('http://localhost:8080/borrowedcopies')
-        .then(res => res.json())
-        .then(data =>{
+      <h1>Working Talent</h1>
+    </header>
 
-            let borrowedcopiesHtml = '';
-            data.forEach(borrowedcopy => {
-                borrowedcopiesHtml += `
+    <div class="topnav">
+      <a class="" href="booktable.html">Book table</a>
+      <a class="" href="bookcopy.html">Copy table</a>
+      <a class="" href="userstable.html"> User Table</a>
+      <a class="" href="reservation.html"> Reservation Table</a>
+      <a class="active"> Borrowedcopy Table</a>
+    </div>
+    <div class="container">
+      <table class="table styled-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Bookcopyid</th>
+            <th>Startdate</th>
+            <th>Enddate</th>
+            <th>Userid</th>
+            <th>Return Book</th>
+          </tr>
+        </thead>
+        <tbody id="borrowedcopytable"></tbody>
+      </table>
+    </div>
+    <footer class="w3-container w3-teal">
+      <h5>Footer</h5>
+      <p>Footer information goes here</p>
+    </footer>
+  </body>
+  <script>
+    /**
+     * This method shows all borrowd copies in a table.
+     */
+    function showAllBorrowedCopies() {
+      fetch("http://localhost:8080/borrowedcopies", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          let borrowedcopiesHtml = "";
+          data.forEach((borrowedcopy) => {
+            borrowedcopiesHtml += `
                                       <tr > 
                                           <td >${borrowedcopy.id}</td>
                                           <td >${borrowedcopy.bookCopyId}</td> 
@@ -69,39 +76,35 @@ function showAllBorrowedCopies(){
                                               <td>${borrowedcopy.endDate}</td> 
                                               <td>${borrowedcopy.userId}</td> 
                                               <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>       
-                                      </tr>`; 
+                                      </tr>`;
+          });
 
-                      });
+          document.getElementById("borrowedcopytable").innerHTML =
+            borrowedcopiesHtml;
+          //console.log(this.responseText);
+        });
+    }
 
-                      document.getElementById("borrowedcopytable").innerHTML = borrowedcopiesHtml;
-              //console.log(this.responseText);
-          })
-       }
+    /**
+     * This method updates a borrowdcopy and adds an end date.
+     */
+    function returnBook(borrowedCopyId) {
+      // Fetch call
+      fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          showAllBorrowedCopies();
+        })
+        .catch((error) => {
+          alert("Er is iets fouts gegaan");
+        });
+    }
 
-         /**
-    * This method updates a borrowdcopy and adds an end date.
-    */
-       function returnBook(borrowedCopyId){
-
-  
-          // Fetch call
-          fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
-            method: "PUT",
-
-          })
-            .then((res) => {
-                showAllBorrowedCopies()
-            })
-            .catch((error) => {
-              alert("Er is iets fouts gegaan");
-            });
-            
-       }
-
-
-
-       showAllBorrowedCopies()
-
-
-</script>
+    showAllBorrowedCopies();
+  </script>
 </html>
