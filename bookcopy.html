@@ -33,8 +33,8 @@
     </header>
     <div class="topnav">
       <a class="" href="adminportal.html">Admin Portal</a>
-      <a class="" href="booktable.html">Book table</a>
-      <a class="active">Copy table</a>
+      <a class="" href="booktable.html">Book Table</a>
+      <a class="active">Copy Table</a>
       <a class="" href="userstable.html"> User Table</a>
       <a class="" href="reservation.html"> Reservation Table</a>
       <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
@@ -46,7 +46,6 @@
             <th>Working Talent Id</th>
             <th>Title</th>
             <th>Number of times borrowed</th>
-            <th>availability</th>
           </tr>
         </thead>
         <tbody id="allBookCopiesTable"></tbody>
@@ -88,7 +87,6 @@
                     <td>${bookcopy.workingTalentId}</td>
                     <td>${bookcopy.bookTitle}</td>
                     <td>${bookcopy.timesBorrowed}</td>
-                    <td></td>
                 </tr>
                 `;
           });
