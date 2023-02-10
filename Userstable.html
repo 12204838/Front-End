@@ -21,6 +21,7 @@
        </header>
 
        <div class="topnav">
+        <a class="" href="adminportal.html">Admin Portal</a>
         <a class="" href="booktable.html">Book table</a>
         <a class="" href="bookcopy.html">Copy table</a>
         <a class="active"> User Table</a>
@@ -36,13 +37,13 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>active</th>
-                <th>admin</th>
+                <th style="display: none">active</th>
+                <th style="display: none">admin</th>
                 <th>Naam</th>
                 <th>email</th>
-                <th>password</th>
-                <th>username</th>
-                <th>set admin</th>
+                <th style="display: none">password</th>
+                <th style="display: none">username</th>
+                <th style="display: none">set admin</th>
                 <th>assign book</th>
             </tr>
         </thead>
@@ -140,13 +141,13 @@ function showUsers(){
                 usersHtml += `
                 <tr>
                     <td>${user.id}</td>
-                    <td>${user.active}</td>
-                    <td>${user.admin}</td>
+                    <td style="display: none">${user.active}</td>
+                    <td style="display: none">${user.admin}</td>
                     <td>${user.name}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
-                    <td>${user.username}</td>
-                    <td>  <label class="switch">
+                    <td style="display: none">${user.password}</td>
+                    <td style="display: none">${user.username}</td>
+                    <td style="display: none">  <label class="switch">
                             <input type="checkbox" id="isadmin">
                             <span class="slider round"></span>
                           </label>

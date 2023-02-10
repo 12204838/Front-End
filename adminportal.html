@@ -36,6 +36,7 @@
       </div>
 
     <div class = "container" >
+        <h2>Available Books</h2>
         <table class = "table styled-table">
           <thead>
               <tr>
@@ -52,8 +53,9 @@
           </tbody>
       </table>
       </div>
-    
+     
       <div class="container">
+        <h2>Pending Reservations</h2>
         <table class="table styled-table">
             <thead>
                 <tr>
@@ -71,7 +73,9 @@
     </div>
 
 </div>
+
 <div class = "container" >
+    <h2>Lending History</h2>
   <table class = "table styled-table">
     <thead>
         <tr>
@@ -175,7 +179,12 @@
     * This method shows all borrowd copies in a table.
     */
     function showAllBorrowedCopies(){
-        fetch('http://localhost:8080/borrowedcopies')
+        fetch('http://localhost:8080/borrowedcopies', {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+    })
         .then(res => res.json())
         .then(data =>{
 

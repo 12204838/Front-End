@@ -24,6 +24,7 @@
     </header>
 
     <div class="topnav">
+        <a class="" href="adminportal.html">Admin Portal</a>
         <a class="" href="booktable.html">Book table</a>
         <a class="" href="bookcopy.html">Copy table</a>
         <a class="" href="userstable.html">Users table</a>
@@ -113,9 +114,9 @@
                         <td>${reservation.bookTitle}</td>
                         <td>${reservation.nameEmployee}</td>
                         <td>${reservation.approved}</td>
-                        <td><button class ="add-book-button button" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        <td><button class ="" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
                         Approve</button></td>
-                        <td><button class ="add-book-button button" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        <td><button class ="" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                         </tr>
                         `
                 });
