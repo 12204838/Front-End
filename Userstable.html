@@ -132,7 +132,7 @@ function showUsers(){
                 "Content-Type": "application/json",
                 "Authorization": localStorage.getItem('token')
             }})
-        .then(res => res.json())
+        .then(res => res.json()).catch(null)
         .then(data =>{
 
             let usersHtml = '';
@@ -152,7 +152,7 @@ function showUsers(){
                     </button></td>
                 </tr>
                 `
-            });
+              });
             document.getElementById('users-data').innerHTML = usersHtml
         })
     }
@@ -271,26 +271,6 @@ function showUsers(){
 
      /**
      * Comment added by Omur
-     * This function deletes an user.
-     * When this function is called it deletes an user with the assigned id
-     */
-    function deleteUser(){
-        let idInput = document.getElementById("id").value;
-
-         // Delete
-         fetch(`http://localhost:8080/user/delete/${idInput}`,{
-            method: "DELETE",
-        })
-        .then((res) => {
-            showUsers();
-        })
-        .catch((error) =>{
-            alert("Er is iets fouts gegaan");
-        });
-
-    }
-     /**
-     * Comment added by Omur
      * pop-up with x
      */
     function addBookCopies2(x){ 
@@ -330,6 +310,7 @@ function showUsers(){
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newUser),
         })
@@ -371,6 +352,7 @@ function showUsers(){
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newUser),
         })
