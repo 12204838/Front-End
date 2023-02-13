@@ -179,7 +179,7 @@
     * This method shows all borrowd copies in a table.
     */
     function showAllBorrowedCopies(){
-        fetch('http://localhost:8080/borrowedcopies', {
+        fetch('http://localhost:8080/borrowedcopies/user', {
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
