@@ -46,6 +46,7 @@
             <th>Working Talent Id</th>
             <th>Title</th>
             <th>Number of times borrowed</th>
+            <th>Remove copy from registry</th>
           </tr>
         </thead>
         <tbody id="allBookCopiesTable"></tbody>
@@ -87,6 +88,9 @@
                     <td>${bookcopy.workingTalentId}</td>
                     <td>${bookcopy.bookTitle}</td>
                     <td>${bookcopy.timesBorrowed}</td>
+                    <td> <button class = button onclick = "removeCopy(${bookcopy.id})" >
+                            Remove copy
+                          </button></td>
                 </tr>
                 `;
           });
@@ -118,5 +122,22 @@
         });
     }
     showAllBookCopies();
+
+    function removeCopy(copyId){
+      
+      fetch(`http://localhost:8080/bookcopy/update/${copyId}`,{
+
+      
+      method : "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+                  }
+          })
+         .then(res =>{
+              showAllBookCopies();
+         }) 
+    }
+
   </script>
 </html>
