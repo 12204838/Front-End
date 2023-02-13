@@ -137,4 +137,15 @@ body {
 
 .topnav a.active:hover {
   background-color: #049962;
+
+  
+}
+
+/*logout button*/
+
+.logoutLblPos{
+
+  position:fixed;
+  right:10px;
+  top:5px;
 }

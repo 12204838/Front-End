@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="booktablestyle.css">
+    <link rel="stylesheet" href="switch.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header class="w3-container w3-teal">
+        <h1>Working Talent</h1>
+        
+        <form align="right" name="form1" method="post" action="inlogapage.html">
+            <label class="logoutLblPos">
+            <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
+            </label>
+          </form>
+    </header>
+
+    <div class="topnav">
+        <a class="active">Admin Portal</a>
+        <a class="" href="booktable.html">Book Table</a>
+        <a class="" href="bookcopy.html">Copy Table</a>
+        <a class="" href="userstable.html"> User Table</a>
+        <a class="" href="reservation.html"> Reservation Table</a>
+        <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
+      </div>
+
+    <div class = "container" >
+        <h2>Available Books</h2>
+        <table class = "table styled-table">
+          <thead>
+              <tr>
+                  <th>Book ID</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Isbn</th>
+                  <th>Make Reservation</th>
+              </tr>
+          </thead>
+          <tbody id="allBooksTable">
+              
+    
+          </tbody>
+      </table>
+      </div>
+     
+      <div class="container">
+        <h2>Pending Reservations</h2>
+        <table class="table styled-table">
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Book title</th>
+                    <th>Employee</th>
+                    <th>Approved</th>
+                </tr>
+            </thead>
+
+            <tbody id="reservations-data">
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class = "container" >
+    <h2>Lending History</h2>
+  <table class = "table styled-table">
+    <thead>
+        <tr>
+            <th>Lending History ID</th>
+            <th>Bookcopyid</th>
+            <th>Startdate</th>
+            <th>Enddate</th>
+            <th>Userid</th>
+        </tr>
+    </thead>
+    <tbody id="borrowedcopytable">
+        
+
+    </tbody>
+</table>
+</div>
+
+</body>
+<script>
+     /**
+	   * This shows all books in the book repository and fills booktable with content.
+	  */
+      function showAllBooks(){
+        fetch('http://localhost:8080/books')
+        .then(res => res.json())
+        .then(data =>{
+            console.log('het is gelukt');
+            
+            console.log(data);
+
+            let booksHtml = '';
+            data.forEach(book => {
+                booksHtml += `
+                                      <tr > 
+                                          <td >${book.id}</td>
+                                          <td >${book.title}</td> 
+                                              <td>${book.author}</td>
+                                              <td>${book.isbn}</td>     
+                                              <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
+                                      </tr>`; 
+
+                      });
+
+                      document.getElementById("allBooksTable").innerHTML = booksHtml;
+              //console.log(this.responseText);
+          })
+       }
+       showAllBooks(); 
+
+             /**
+       * This method allows the user to make a reservation of a book.
+       * FOr now the user Id has to be filled in.
+       * @param userId and bookId.
+       */
+       function makeReservation(bookId){
+        let newReservation = {
+            bookId: bookId,
+        };
+
+        // Fetch call
+        fetch('http://localhost:8080/book/makereservation', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+            body: JSON.stringify(newReservation),
+        })
+            .then((res) => {
+              alert("Reservation came through!");
+              showReservations();
+            });
+
+       }
+
+           /**
+    * This method displays all reservations from the reservations table.
+    */
+    function showReservations() {
+        fetch('http://localhost:8080/reservations')
+            .then(res => res.json())
+            .then(data => {
+                let reservationsHtml = '';
+                data.forEach(reservation => {
+                    reservationsHtml += `
+                        <tr>
+                        <td>${reservation.id}</td>
+                        <td>${reservation.bookTitle}</td>
+                        <td>${reservation.nameEmployee}</td>
+                        <td>${reservation.approved}</td>
+                        </tr>
+                        `
+                });
+                document.getElementById('reservations-data').innerHTML = reservationsHtml
+            })
+    }
+
+    showReservations();
+
+             /**
+    * This method shows all borrowd copies in a table.
+    */
+    function showAllBorrowedCopies(){
+        fetch('http://localhost:8080/borrowedcopies', {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+    })
+        .then(res => res.json())
+        .then(data =>{
+
+            let borrowedcopiesHtml = '';
+            data.forEach(borrowedcopy => {
+                borrowedcopiesHtml += `
+                                      <tr > 
+                                          <td >${borrowedcopy.id}</td>
+                                          <td >${borrowedcopy.bookCopyId}</td> 
+                                              <td>${borrowedcopy.startDate}</td>
+                                              <td>${borrowedcopy.endDate}</td> 
+                                              <td>${borrowedcopy.userId}</td>       
+                                      </tr>`; 
+
+                      });
+
+                      document.getElementById("borrowedcopytable").innerHTML = borrowedcopiesHtml;
+              //console.log(this.responseText);
+          })
+       }
+       showAllBorrowedCopies();
+</script>
+</html>

@@ -17,12 +17,18 @@
         <h1>
           Working Talent
         </h1>
+        <form align="right" name="form1" method="post" action="inlogapage.html">
+          <label class="logoutLblPos">
+          <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
+          </label>
+        </form>
       
        </header>
 
        <div class="topnav">
-        <a class="" href="booktable.html">Book table</a>
-        <a class="" href="bookcopy.html">Copy table</a>
+        <a class="" href="adminportal.html">Admin Portal</a>
+        <a class="" href="booktable.html">Book Table</a>
+        <a class="" href="bookcopy.html">Copy Table</a>
         <a class="active"> User Table</a>
         <a class="" href="reservation.html"> Reservation Table</a>
         <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
@@ -32,16 +38,18 @@
   
   
   
-    <table class = "table table-striped">
+    <table class = "table styled-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>active</th>
-                <th>admin</th>
+                <th>User ID</th>
+                <th style="display: none">active</th>
+                <th style="display: none">admin</th>
                 <th>Naam</th>
                 <th>email</th>
-                <th>password</th>
-                <th>username</th>
+                <th style="display: none">password</th>
+                <th style="display: none">username</th>
+                <th style="display: none">set admin</th>
+                <th>assign book</th>
             </tr>
         </thead>
         <tbody id="users-data">
@@ -89,10 +97,6 @@
 
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -102,22 +106,18 @@
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="modal-table">
           <table class = "table table-striped">
             <thead>
                 <tr>
                     <th>Booktitle</th>
                 </tr>
             </thead>
-            <tbody id="bookcopiesdata">
+            <tbody id="allBooksTable">
                 
 
             </tbody>
             </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -132,31 +132,37 @@
      * and a button to assign bookcopy to the user.
      */
 function showUsers(){
-        fetch('http://localhost:8080/users')
-        .then(res => res.json())
+        fetch('http://localhost:8080/users',{
+        method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            }})
+        .then(res => res.json()).catch(null)
         .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
 
             let usersHtml = '';
             data.forEach(user => {
                 usersHtml += `
                 <tr>
                     <td>${user.id}</td>
-                    <td>${user.active}</td>
-                    <td>${user.admin}</td>
+                    <td style="display: none">${user.active}</td>
+                    <td style="display: none">${user.admin}</td>
                     <td>${user.name}</td>
                     <td>${user.email}</td>
-                    <td>${user.password}</td>
-                    <td>${user.username}</td>
-                    <td><button type= "button" onclick = "viewCopies(${user.id})" class="editbtn">add</button></td>
-                    <td><button type="button" class="btn btn-primary" onclick = "viewCopies(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
+                    <td style="display: none">${user.password}</td>
+                    <td style="display: none">${user.username}</td>
+                    <td style="display: none">  <label class="switch">
+                            <input type="checkbox" id="isadmin">
+                            <span class="slider round"></span>
+                          </label>
+                    </td>
+                    <td><button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Assign book copy
                     </button></td>
                 </tr>
                 `
-            });
+              });
             document.getElementById('users-data').innerHTML = usersHtml
         })
     }
@@ -171,48 +177,108 @@ function showUsers(){
           }
   
         } 
+     function showAllBooks(userId){
+        fetch('http://localhost:8080/books')
+        .then(res => res.json())
+        .then(data =>{
 
-    function viewCopies(userid) {
-        let bookId = viewBookIdPrompt();
+            let booksHtml = `<table class = "table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th style="display:none">Book Id</th>
+                                      <th>Booktitle</th>
+                                      <th>Author</th>
+                                      <th>Show available copies</th>
+                                  </tr>
+                              </thead>
+                              <tbody>`;
+            data.forEach(book => {
+                booksHtml += `
+                                      <tr > 
+                                        <td style="display:none">${book.id}</td> 
+                                          <td>${book.title}</td> 
+                                              <td>${book.author}</td>
+                                              <td>
+                                                <button class = button onclick = "viewCopies(${book.id},${userId})" data-bs-target="#exampleModal">
+                                                  Show available copies  
+                                                </button>
+                                                </td>
+                                      </tr>`; 
 
-        fetch(`http://localhost:8080/book/${bookId}/copies`)
+                      });
+                      booksHtml += `</tbody>
+                                    </table>`
+                      document.getElementById("modal-table").innerHTML = booksHtml;
+              //console.log(this.responseText);
+          })
+       }
+
+
+    function viewCopies(bookId,userId) {
+        fetch(`http://localhost:8080/book/${bookId}/availablecopies`, {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": localStorage.getItem('token')
+            }
+        })
         .then((res) => res.json())
         .then(data => {
-            let copiesHtml = ``
+            let copiesHtml = `<table class = "table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th style="display:none">BookCopy Id</th>
+                                      <th>Working Talent Id</th>
+                                      <th>Title</th>
+                                      <th>Assign</th>
+                                  </tr>
+                              </thead>
+                              <tbody>`
 
             data.forEach(copy => {
                 copiesHtml += `
-                <tr>
+                <tr >
+                    <td style="display:none">${copy.id}</td>
+                    <td>${copy.workingTalentId}</td>
                     <td>${copy.bookTitle}</td>
+                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId})" data-bs-dismiss="modal" data-bs-target="#ExampleModal">
+                            Assign copy
+                          </button></td> 
                 </tr>
                 `
             })
-
-            document.getElementById("bookcopiesdata").innerHTML = copiesHtml;
+            copiesHtml += `</tbody>
+                          </table>`
+            document.getElementById("modal-table").innerHTML = copiesHtml;
         })
     }
 
-     /**
-     * Comment added by Omur
-     * This function deletes an user.
-     * When this function is called it deletes an user with the assigned id
-     */
-    function deleteUser(){
-        let idInput = document.getElementById("id").value;
+    function chooseCopy(copyId,userId) {
 
-         // Delete
-         fetch(`http://localhost:8080/user/delete/${idInput}`,{
-            method: "DELETE",
+        let newBorrowedCopy = {
+            bookCopyId: Number(copyId),
+            userId: Number(userId),
+            
+        };
+        fetch(`http://localhost:8080/user/${userId}/assign`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newBorrowedCopy),
         })
         .then((res) => {
-            alert("Is goedgegaan");
             showUsers();
+            
         })
         .catch((error) =>{
             alert("Er is iets fouts gegaan");
         });
 
-    }
+
+        
+         }
+
      /**
      * Comment added by Omur
      * pop-up with x
@@ -254,11 +320,11 @@ function showUsers(){
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newUser),
         })
         .then((res) => {
-            alert("Is goedgegaan");
             showUsers();
         })
         .catch((error) =>{
@@ -296,11 +362,11 @@ function showUsers(){
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify(newUser),
         })
         .then((res) => {
-            alert("Is goedgegaan");
             showUsers();
             
         })
