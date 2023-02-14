@@ -24,7 +24,13 @@
             <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
             </label>
           </form>
+
     </header>
+    <div class="topnav">
+        <a class="active">User Portal</a>
+        <a class="" href="accountSettings.html">Account Settings</a>
+
+      </div>
 
     <div class = "container" >
         <h2>Available Books</h2>
@@ -145,7 +151,12 @@
     * This method displays all reservations from the reservations table.
     */
     function showReservations() {
-        fetch('http://localhost:8080/reservations')
+        fetch('http://localhost:8080/reservations/user',{
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+        })
             .then(res => res.json())
             .then(data => {
                 let reservationsHtml = '';
@@ -169,7 +180,12 @@
     * This method shows all borrowd copies in a table.
     */
     function showAllBorrowedCopies(){
-        fetch('http://localhost:8080/borrowedcopies')
+        fetch('http://localhost:8080/borrowedcopies/user',{
+        headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+        })
         .then(res => res.json())
         .then(data =>{
 
