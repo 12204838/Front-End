@@ -149,3 +149,11 @@ body {
   right:10px;
   top:5px;
 }
+
+
+/*checkmark*/
+.checkmark {
+  color: #009879;
+  font-size: 20px;
+  text-indent: 20%;
+}

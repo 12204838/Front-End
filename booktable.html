@@ -201,8 +201,10 @@
       })
         .then((res) => {
           showAllBooks();
+          console.log(res.json().validationMessages)
         })
-        .catch((error) => {});
+        .catch((error) => {
+        });
     }
 
     /**

@@ -43,13 +43,14 @@
             <tr>
                 <th>User ID</th>
                 <th style="display: none">active</th>
-                <th style="display: none">admin</th>
                 <th>Naam</th>
                 <th>email</th>
                 <th style="display: none">password</th>
                 <th style="display: none">username</th>
-                <th style="display: none">set admin</th>
+                <th >admin</th>
+                <th>set admin</th>
                 <th>assign book</th>
+                <th>deactivate user</th>
             </tr>
         </thead>
         <tbody id="users-data">
@@ -143,26 +144,55 @@ function showUsers(){
 
             let usersHtml = '';
             data.forEach(user => {
+              
+              if (user.admin == true){
                 usersHtml += `
                 <tr>
                     <td>${user.id}</td>
                     <td style="display: none">${user.active}</td>
-                    <td style="display: none">${user.admin}</td>
+
                     <td>${user.name}</td>
                     <td>${user.email}</td>
                     <td style="display: none">${user.password}</td>
                     <td style="display: none">${user.username}</td>
-                    <td style="display: none">  <label class="switch">
-                            <input type="checkbox" id="isadmin">
-                            <span class="slider round"></span>
-                          </label>
+                    <td class = "checkmark"><span >&#10003;</span></td>
+                    <td >  <button type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
+                        Set admin
+                    </button>
                     </td>
                     <td><button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Assign book copy
                     </button></td>
+                    <td><button type="button" onclick = "deactivateUser(${user.id})">
+                        deactivate user
+                    </button></td>
+                </tr>`
+              }
+              else{
+                usersHtml += `
+                <tr>
+                    <td>${user.id}</td>
+                    <td style="display: none">${user.active}</td>
+
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td style="display: none">${user.password}</td>
+                    <td style="display: none">${user.username}</td>
+                    <td></td>
+                    <td >  <button type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
+                        Set admin
+                    </button>
+                    </td>
+                    <td><button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Assign book copy
+                    </button></td>
+                    <td><button type="button" onclick = "deactivateUser(${user.id})">
+                        deactivate user
+                    </button></td>
                 </tr>
-                `
+                `}
               });
+            
             document.getElementById('users-data').innerHTML = usersHtml
         })
     }
@@ -294,29 +324,30 @@ function showUsers(){
      * The admin can change the users name, email, username, password,
      * and het can choose to set the user on active or make him an admin.
      */
-    function updateUser(){
+
+     function confirmAdmin(userId,admin) {
+      console.log(admin);
+          if (confirm("Change admin status?") == true) {
+          isAdmin = !admin;
+         console.log(isAdmin);
+            setAdmin(userId, isAdmin)
+          } else {
+            
+          }
+  
+        } 
+
+    function setAdmin(userId,isAdmin){
         //formulier uitlezen
+        admin = isAdmin;
+        
 
-        let idInput = document.getElementById("id").value;
-        let nameInput = document.getElementById("name").value;
-        let emailInput = document.getElementById("email").value;
-        let usernameInput = document.getElementById("username").value;
-        let passwordInput = document.getElementById("password").value;
-        let isActiveInput = document.getElementById("isactive").checked;
-        let isAdminInput = document.getElementById("isadmin").checked;
-
-        // Javascript object
         let newUser = {
-            name: nameInput,
-            email: emailInput,
-            username: usernameInput,
-            password: passwordInput,
-            admin: isAdminInput,
-            active: isActiveInput,
-        };
-
-        // Fetch call
-        fetch(`http://localhost:8080/user/update/${idInput}`,{
+          admin: admin
+        }
+        
+                // Fetch call
+                fetch(`http://localhost:8080/user/${userId}/setadmin`,{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -330,7 +361,65 @@ function showUsers(){
         .catch((error) =>{
             alert("Er is iets fouts gegaan");
         });
-    }
+      }
+        // Deactivate user 
+        // anonimiseerd de gegeven van de gebruiker
+        function deactivateUser(userId){
+          
+          
+          // Fetch call
+           fetch(`http://localhost:8080/user/${userId}/deactivate`,{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+            // body: JSON.stringify(newUser),
+        })
+        .then((res) => {
+            showUsers();
+        })
+        .catch((error) =>{
+            alert("Er is iets fouts gegaan");
+        });
+      }
+        
+
+
+
+        // Dit kan naar de create userpage.
+        // let idInput = document.getElementById("id").value;
+        // let nameInput = document.getElementById("name").value;
+        // let emailInput = document.getElementById("email").value;
+        // let usernameInput = document.getElementById("username").value;
+        // let passwordInput = document.getElementById("password").value;
+        // let isActiveInput = document.getElementById("isactive").checked;
+        // let isAdminInput = document.getElementById("isadmin").checked;
+
+        // // Javascript object
+        // let newUser = {
+        //     name: nameInput,
+        //     email: emailInput,
+        //     username: usernameInput,
+        //     password: passwordInput,
+        //     admin: isAdminInput,
+        //     active: isActiveInput,
+        // };
+        // // Fetch call
+        // fetch(`http://localhost:8080/user/update/${userId}`,{
+        //     method: "PUT",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": localStorage.getItem('token')
+        //     },
+        //     body: JSON.stringify(newUser),
+        // })
+        // .then((res) => {
+        //     showUsers();
+        // })
+        // .catch((error) =>{
+        //     alert("Er is iets fouts gegaan");
+        // });
 
     /**
      * Comment added by Omur

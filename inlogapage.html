@@ -84,11 +84,12 @@
         localStorage.setItem('token', loginResponseDto.token);
 
         admin = JSON.parse(loginResponseDto.admin);
+        active = JSON.parse(loginResponseDto.active);
         //als admin dan naar admin portal anders userportal
-         if (admin == true){
+         if (admin == true & active == true){
           window.location.href = "adminportal.html";
           }
-          else{
+          if(admin == false & active == true){
           window.location.href = "userportal.html";
           }
       } else {
