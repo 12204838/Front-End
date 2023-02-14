@@ -26,10 +26,29 @@
           </form>
 
     </header>
-    <div class="topnav">
-        <a class="active">User Portal</a>
-        <a class="" href="accountSettings.html">Account Settings</a>
-
+    <div class="navbarwt">
+        <div class="dropdownwt">
+        <button class="dropbtnwt">User
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-contentwt">
+          <a  href="userportal.html">Userportal</a>
+          <a  href="booktable.html">Book Table</a>
+        </div>
+      </div>
+        <div class="dropdownwt">
+          <button class="dropbtnwt">Admin
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-contentwt">
+            <a  href="adminportal.html">Admin portal</a>
+            <a  href="booktable.html">Book Table</a>
+            <a  href="bookcopy.html">Copy Table</a>
+            <a  href="userstable.html"> User Table</a>
+            <a  href="reservation.html"> Reservation Table</a>
+            <a  href="borrowedcopy.html"> Borrowedcopy Table</a>
+          </div>
+        </div>
       </div>
 
     <div class = "container" >
@@ -161,6 +180,7 @@
             .then(data => {
                 let reservationsHtml = '';
                 data.forEach(reservation => {
+                    if(reservation.approved == false){
                     reservationsHtml += `
                         <tr>
                         <td>${reservation.id}</td>
@@ -168,7 +188,7 @@
                         <td>${reservation.nameEmployee}</td>
                         <td>${reservation.approved}</td>
                         </tr>
-                        `
+                        `}
                 });
                 document.getElementById('reservations-data').innerHTML = reservationsHtml
             })
