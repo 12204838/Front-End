@@ -27,7 +27,13 @@
       <h1>Working Talent</h1>
       <form align="right" name="form1" method="post" action="inlogapage.html">
         <label class="logoutLblPos">
-        <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
+          <input
+            name="submit2"
+            type="submit"
+            id="submit2"
+            value="log out"
+            onclick="localStorage.clear()"
+          />
         </label>
       </form>
     </header>
@@ -45,7 +51,7 @@
           <tr>
             <th>Working Talent Id</th>
             <th>Title</th>
-            <th>Number of times borrowed</th>
+            <th>Condition</th>
           </tr>
         </thead>
         <tbody id="allBookCopiesTable"></tbody>
@@ -70,23 +76,25 @@
      */
 
     function showAllBookCopies() {
-      fetch("http://localhost:8080/bookcopies",{
-      method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem('token')
-            },
-        })
+      fetch("http://localhost:8080/bookcopies", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           let bookcopiesHtml = "";
           data.forEach((bookcopy) => {
+            let x = copyStatus(bookcopy.timesBorrowed);
+            console.log(x);
             bookcopiesHtml += `
                 <tr>
                     <td style = "display : none" >${bookcopy.id}</td>
                     <td>${bookcopy.workingTalentId}</td>
                     <td>${bookcopy.bookTitle}</td>
-                    <td>${bookcopy.timesBorrowed}</td>
+                    <td>${x}</td>
                 </tr>
                 `;
           });
@@ -116,6 +124,19 @@
             bookcopiesHtml;
           //console.log(this.responseText);
         });
+    }
+    function copyStatus(timesBorrowed) {
+      if (timesBorrowed < 5) {
+        return "New";
+      } else if (timesBorrowed < 10) {
+        return "Fine";
+      } else if (timesBorrowed < 20) {
+        return "Near Fine";
+      } else if (timesBorrowed < 40) {
+        return "Good";
+      } else if (timesBorrowed > 50) {
+        return "Poor";
+      }
     }
     showAllBookCopies();
   </script>
