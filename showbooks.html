@@ -87,7 +87,12 @@
   </style>
   <script>
     function showAllBooks() {
-      fetch("http://localhost:8080/books")
+      fetch("http://localhost:8080/books",{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log("het is gelukt");
@@ -103,11 +108,14 @@
         <div class="card-body">
             <h5 class="card-title">${book.title}</h5>
             <p class="card-text">${book.author}</p>
-            <button onclick="makeReservation(${book.id})" class="btn btn-primary">Reserve</button>
-        </div>
-    </div>
-                                   
-                            `;
+            <button onclick="makeReservation(${book.id})" class="btn btn-primary">Reserve</button>`
+            if (book.available) {
+                        booksHtml += `        <p style= "color:green">In stock</p>`
+                    } else {
+                        booksHtml += `        <p style= "color:red">Unavailable at this moment</p>`
+                    } booksHtml+= `
+            </div>
+          </div> `;
           });
 
           document.getElementById("allBooksTable").innerHTML = booksHtml;
