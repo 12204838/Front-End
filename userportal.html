@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="booktablestyle.css">
     <link rel="stylesheet" href="switch.css">
@@ -15,19 +16,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <header class="w3-container w3-teal">
         <h1>Working Talent</h1>
-        
+
         <form align="right" name="form1" method="post" action="inlogapage.html">
             <label class="logoutLblPos">
-            <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
+                <input name="submit2" type="submit" id="submit2" value="log out" onclick="localStorage.clear()">
             </label>
-          </form>
+        </form>
 
     </header>
     <div class="navbarwt">
         <div class="dropdownwt">
+
         <button class="dropbtnwt">User
           <i class="fa fa-caret-down"></i>
         </button>
@@ -35,43 +38,44 @@
           <a  href="userportal.html">User Portal</a>
           <a href="showbooks.html">Books</a>
           <a href="accountSettings.html">Account Settings</a>
-        </div>
-      </div>
-        <div class="dropdownwt">
-          <button class="dropbtnwt">Admin
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-contentwt">
-            <a  href="adminportal.html">Admin portal</a>
-            <a  href="booktable.html">Book Table</a>
-            <a  href="bookcopy.html">Copy Table</a>
-            <a  href="userstable.html"> User Table</a>
-            <a  href="reservation.html"> Reservation Table</a>
-            <a  href="borrowedcopy.html"> Borrowedcopy Table</a>
-          </div>
-        </div>
-      </div>
 
-    <div class = "container" >
+        </div>
+        <div class="dropdownwt">
+            <button class="dropbtnwt">Admin
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-contentwt">
+                <a href="adminportal.html">Admin portal</a>
+                <a href="booktable.html">Book Table</a>
+                <a href="bookcopy.html">Copy Table</a>
+                <a href="userstable.html"> User Table</a>
+                <a href="reservation.html"> Reservation Table</a>
+                <a href="borrowedcopy.html"> Borrowedcopy Table</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
         <h2>Available Books</h2>
-        <table class = "table styled-table">
-          <thead>
-              <tr>
-                  <th>Book ID</th>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Isbn</th>
-                  <th>Make Reservation</th>
-              </tr>
-          </thead>
-          <tbody id="allBooksTable">
-              
-    
-          </tbody>
-      </table>
-      </div>
-    
-      <div class="container">
+        <table class="table styled-table">
+            <thead>
+                <tr>
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Isbn</th>
+                    <th>Availability</th>
+                    <th>Make Reservation</th>
+                </tr>
+            </thead>
+            <tbody id="allBooksTable">
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
         <h2>Pending Reservations</h2>
         <table class="table styled-table">
             <thead>
@@ -89,64 +93,74 @@
         </table>
     </div>
 
-</div>
-<div class = "container" >
-    <h2>Lending History</h2>
-  <table class = "table styled-table">
-    <thead>
-        <tr>
-            <th>Lending History ID</th>
-            <th>Bookcopyid</th>
-            <th>Startdate</th>
-            <th>Enddate</th>
-            <th>Userid</th>
-        </tr>
-    </thead>
-    <tbody id="borrowedcopytable">
-        
+    </div>
+    <div class="container">
+        <h2>Lending History</h2>
+        <table class="table styled-table">
+            <thead>
+                <tr>
+                    <th>Lending History ID</th>
+                    <th>Bookcopyid</th>
+                    <th>Startdate</th>
+                    <th>Enddate</th>
+                    <th>Userid</th>
+                </tr>
+            </thead>
+            <tbody id="borrowedcopytable">
 
-    </tbody>
-</table>
-</div>
+
+            </tbody>
+        </table>
+    </div>
 
 </body>
 <script>
-     /**
-	   * This shows all books in the book repository and fills booktable with content.
-	  */
-      function showAllBooks(){
-        fetch('http://localhost:8080/books')
-        .then(res => res.json())
-        .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
+    /**
+      * This shows all books in the book repository and fills booktable with content.
+     */
+    function showAllBooks() {
+        fetch('http://localhost:8080/books', {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("token"),
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('het is gelukt');
 
-            let booksHtml = '';
-            data.forEach(book => {
-                booksHtml += `
+                console.log(data);
+
+                let booksHtml = '';
+                data.forEach(book => {
+                    booksHtml += `
                                       <tr > 
                                           <td >${book.id}</td>
                                           <td >${book.title}</td> 
                                               <td>${book.author}</td>
-                                              <td>${book.isbn}</td>     
-                                              <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
-                                      </tr>`; 
+                                              <td>${book.isbn}</td>`
+                    if (book.available) {
+                        booksHtml += `        <td style= "color:green">In stock</td>`
+                    } else {
+                        booksHtml += `        <td style= "color:red">Unavailable at this moment</td>`
+                    }
+                    booksHtml += `            <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
+                                      </tr>`;
 
-                      });
+                });
 
-                      document.getElementById("allBooksTable").innerHTML = booksHtml;
-              //console.log(this.responseText);
-          })
-       }
-       showAllBooks(); 
+                document.getElementById("allBooksTable").innerHTML = booksHtml;
+                //console.log(this.responseText);
+            })
+    }
+    showAllBooks();
 
-             /**
-       * This method allows the user to make a reservation of a book.
-       * FOr now the user Id has to be filled in.
-       * @param userId and bookId.
-       */
-       function makeReservation(bookId){
+    /**
+* This method allows the user to make a reservation of a book.
+* FOr now the user Id has to be filled in.
+* @param userId and bookId.
+*/
+    function makeReservation(bookId) {
         let newReservation = {
             bookId: bookId,
         };
@@ -161,17 +175,17 @@
             body: JSON.stringify(newReservation),
         })
             .then((res) => {
-              alert("Reservation came through!");
-              showReservations();
+                alert("Reservation came through!");
+                showReservations();
             });
 
-       }
+    }
 
-           /**
-    * This method displays all reservations from the reservations table.
-    */
+    /**
+* This method displays all reservations from the reservations table.
+*/
     function showReservations() {
-        fetch('http://localhost:8080/reservations/user',{
+        fetch('http://localhost:8080/reservations/user', {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": localStorage.getItem('token')
@@ -181,8 +195,8 @@
             .then(data => {
                 let reservationsHtml = '';
                 data.forEach(reservation => {
-                    if(reservation.approved == false){
-                    reservationsHtml += `
+                    if (reservation.approved == false) {
+                        reservationsHtml += `
                         <tr>
                         <td>${reservation.id}</td>
                         <td>${reservation.bookTitle}</td>
@@ -197,36 +211,37 @@
 
     showReservations();
 
-             /**
-    * This method shows all borrowd copies in a table.
-    */
-    function showAllBorrowedCopies(){
-        fetch('http://localhost:8080/borrowedcopies/user',{
-        headers: {
+    /**
+* This method shows all borrowd copies in a table.
+*/
+    function showAllBorrowedCopies() {
+        fetch('http://localhost:8080/borrowedcopies/user', {
+            headers: {
                 "Content-Type": "application/json",
                 "Authorization": localStorage.getItem('token')
             },
         })
-        .then(res => res.json())
-        .then(data =>{
+            .then(res => res.json())
+            .then(data => {
 
-            let borrowedcopiesHtml = '';
-            data.forEach(borrowedcopy => {
-                borrowedcopiesHtml += `
+                let borrowedcopiesHtml = '';
+                data.forEach(borrowedcopy => {
+                    borrowedcopiesHtml += `
                                       <tr > 
                                           <td >${borrowedcopy.id}</td>
                                           <td >${borrowedcopy.bookCopyId}</td> 
                                               <td>${borrowedcopy.startDate}</td>
                                               <td>${borrowedcopy.endDate}</td> 
                                               <td>${borrowedcopy.userId}</td>       
-                                      </tr>`; 
+                                      </tr>`;
 
-                      });
+                });
 
-                      document.getElementById("borrowedcopytable").innerHTML = borrowedcopiesHtml;
-              //console.log(this.responseText);
-          })
-       }
-       showAllBorrowedCopies();
+                document.getElementById("borrowedcopytable").innerHTML = borrowedcopiesHtml;
+                //console.log(this.responseText);
+            })
+    }
+    showAllBorrowedCopies();
 </script>
+
 </html>

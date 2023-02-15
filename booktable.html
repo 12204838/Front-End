@@ -64,6 +64,7 @@
             <th>Title</th>
             <th>Author</th>
             <th>Isbn</th>
+            <th>Available/total bookcopies</th>
             <th>Add copy</th>
             <th>Make Reservation</th>
           </tr>
@@ -126,7 +127,12 @@
      * This shows all books in the book repository and fills booktable with content.
      */
     function showAllBooks() {
-      fetch("http://localhost:8080/books")
+
+      fetch("http://localhost:8080/books/availabletotalcopies", {      
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }})
         .then((res) => res.json())
         .then((data) => {
           console.log("het is gelukt");
@@ -141,6 +147,7 @@
                                            <td >${book.title}</td>
                                                <td>${book.author}</td>
                                                <td>${book.isbn}</td>
+                                               <td>${book.availableBookCopies}/${book.totalBookCopies}</td>
                                                <td><button type= "button" onclick = "addBookCopies2(${book.id})" class="editbtn">add</button></td>
                                                <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>
                                        </tr>`;
