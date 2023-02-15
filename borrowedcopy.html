@@ -59,7 +59,7 @@
         <thead>
           <tr>
             <th>Lending History ID</th>
-            <th>Bookcopyid</th>
+            <th>workingTalentId</th>
             <th>Startdate</th>
             <th>Enddate</th>
             <th>Userid</th>
@@ -93,7 +93,7 @@
             borrowedcopiesHtml += `
                                       <tr > 
                                           <td >${borrowedcopy.id}</td>
-                                          <td >${borrowedcopy.bookCopyId}</td> 
+                                          <td >${borrowedcopy.bookId}.${borrowedcopy.wtId}</td> 
                                               <td>${borrowedcopy.startDate}</td>
                                               <td>${borrowedcopy.endDate}</td> 
                                               <td>${borrowedcopy.userId}</td> 

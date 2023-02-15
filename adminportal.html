@@ -66,6 +66,7 @@
                   <th>Title</th>
                   <th>Author</th>
                   <th>Isbn</th>
+                  <th>Availability</th>
                   <th>Make Reservation</th>
               </tr>
           </thead>
@@ -166,32 +167,42 @@ function showLendingContainer(){
      /**
 	   * This shows all books in the book repository and fills booktable with content.
 	  */
-      function showAllBooks(){
-        fetch('http://localhost:8080/books')
-        .then(res => res.json())
-        .then(data =>{
-            console.log('het is gelukt');
-            
-            console.log(data);
+    function showAllBooks() {
+        fetch('http://localhost:8080/books', {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: localStorage.getItem("token"),
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('het is gelukt');
 
-            let booksHtml = '';
-            data.forEach(book => {
-                booksHtml += `
+                console.log(data);
+
+                let booksHtml = '';
+                data.forEach(book => {
+                    booksHtml += `
                                       <tr > 
                                           <td >${book.id}</td>
                                           <td >${book.title}</td> 
                                               <td>${book.author}</td>
-                                              <td>${book.isbn}</td>     
-                                              <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
-                                      </tr>`; 
+                                              <td>${book.isbn}</td>`
+                    if (book.available) {
+                        booksHtml += `        <td style= "color:green">In stock</td>`
+                    } else {
+                        booksHtml += `        <td style= "color:red">Unavailable at this moment</td>`
+                    }
+                    booksHtml += `            <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
+                                      </tr>`;
 
-                      });
+                });
 
-                      document.getElementById("allBooksTable").innerHTML = booksHtml;
-              //console.log(this.responseText);
-          })
-       }
-       showAllBooks(); 
+                document.getElementById("allBooksTable").innerHTML = booksHtml;
+                //console.log(this.responseText);
+            })
+    }
+    showAllBooks();
 
              /**
        * This method allows the user to make a reservation of a book.
