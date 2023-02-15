@@ -28,14 +28,30 @@
           </form>
     </header>
 
-    <div class="topnav">
-        <a class="" href="adminportal.html">Admin Portal</a>
-        <a class="" href="booktable.html">Book Table</a>
-        <a class="" href="bookcopy.html">Copy Table</a>
-        <a class="" href="userstable.html">User Table</a>
-        <a class="active"> Reservation Table</a>
-        <a class="" href="borrowedcopy.html"> Borrowedcopy Table</a>
-    </div>
+    <div class="navbarwt">
+        <div class="dropdownwt">
+        <button class="dropbtnwt">User
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-contentwt">
+          <a  href="userportal.html">Userportal</a>
+          <a  href="booktable.html">Book Table</a>
+        </div>
+      </div>
+        <div class="dropdownwt">
+          <button class="dropbtnwt">Admin
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-contentwt">
+            <a  href="adminportal.html">Admin portal</a>
+            <a  href="booktable.html">Book Table</a>
+            <a  href="bookcopy.html">Copy Table</a>
+            <a  href="userstable.html"> User Table</a>
+            <a  href="reservation.html"> Reservation Table</a>
+            <a  href="borrowedcopy.html"> Borrowedcopy Table</a>
+          </div>
+        </div>
+      </div>
 
 
     <div class="container">
@@ -45,7 +61,6 @@
                     <th>Reservation ID</th>
                     <th>Book title</th>
                     <th>Employee</th>
-                    <th>Approved</th>
                     <th>Approve?</th>
                     <th>Delete?</th>
                 </tr>
@@ -113,17 +128,17 @@
             .then(data => {
                 let reservationsHtml = '';
                 data.forEach(reservation => {
+                    if(reservation.approved == false){
                     reservationsHtml += `
                         <tr>
                         <td>${reservation.id}</td>
                         <td>${reservation.bookTitle}</td>
                         <td>${reservation.nameEmployee}</td>
-                        <td>${reservation.approved}</td>
                         <td><button class ="" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
                         Approve</button></td>
                         <td><button class ="" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                         </tr>
-                        `
+                        `}
                 });
                 document.getElementById('reservations-data').innerHTML = reservationsHtml
             })
