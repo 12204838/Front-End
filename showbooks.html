@@ -43,7 +43,7 @@
           <a href="accountSettings.html">Account Settings</a>
         </div>
       </div>
-      <div class="dropdownwt">
+      <div class="dropdownwt" id="adminmenu">
         <button class="dropbtnwt">
           Admin
           <i class="fa fa-caret-down"></i>
@@ -57,22 +57,17 @@
           <a href="borrowedcopy.html"> Borrowedcopy Table</a>
         </div>
       </div>
-    </div>
-    <div class="dropdownwt">
-      <button class="dropbtnwt">
-        Admin
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-contentwt">
-        <a href="adminportal.html">Admin portal</a>
-        <a href="booktable.html">Book Table</a>
-        <a href="bookcopy.html">Copy Table</a>
-        <a href="userstable.html"> User Table</a>
-        <a href="reservation.html"> Reservation Table</a>
-        <a href="borrowedcopy.html"> Borrowedcopy Table</a>
       </div>
+
+      <div class="banner-container">
+        <div class="banner">
+  
+        </div>
+      </div>
+
+    <div class="flex-container" id="allBooksTable">
+      
     </div>
-    <div class="flex-container" id="allBooksTable"></div>
   </body>
 
   <style>
@@ -86,6 +81,11 @@
     }
   </style>
   <script>
+        //Checks if admin or not
+        let hasAdminRights = localStorage.getItem('admin') == 1;
+  if (!hasAdminRights) {
+    document.getElementById('adminmenu').style.display = 'none';
+  }
     function showAllBooks() {
       fetch("http://localhost:8080/books",{
         headers: {

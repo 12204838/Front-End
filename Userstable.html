@@ -41,7 +41,7 @@
         <a href="accountSettings.html">Account Settings</a>
       </div>
     </div>
-    <div class="dropdownwt">
+    <div class="dropdownwt" id="adminmenu">
       <button class="dropbtnwt">Admin
         <i class="fa fa-caret-down"></i>
       </button>
@@ -147,6 +147,11 @@
   </div>
 </body>
 <script>
+      //Checks if admin or not
+      let hasAdminRights = localStorage.getItem('admin') == 1;
+  if (!hasAdminRights) {
+    document.getElementById('adminmenu').style.display = 'none';
+  }
   /**
    * Comment added by Omur
    * This function shows the users in a table.
