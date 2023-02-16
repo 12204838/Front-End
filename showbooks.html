@@ -43,7 +43,7 @@
           <a href="accountSettings.html">Account Settings</a>
         </div>
       </div>
-      <div class="dropdownwt">
+      <div class="dropdownwt" id="adminmenu">
         <button class="dropbtnwt">
           Admin
           <i class="fa fa-caret-down"></i>
@@ -76,16 +76,16 @@
       flex-wrap: wrap;
     }
 
-    .image-overlay{
-    box-shadow: inset 0 0 0 2000px rgba(21, 148, 82, 0.704);
-    position: fixed;
-    }
-
     .card {
       margin: 50px;
     }
   </style>
   <script>
+        //Checks if admin or not
+        let hasAdminRights = localStorage.getItem('admin') == 1;
+  if (!hasAdminRights) {
+    document.getElementById('adminmenu').style.display = 'none';
+  }
     function showAllBooks() {
       fetch("http://localhost:8080/books",{
         headers: {
