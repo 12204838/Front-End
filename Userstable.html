@@ -162,7 +162,13 @@
         "Authorization": localStorage.getItem('token')
       }
     })
-      .then(res => res.json()).catch(null)
+      .then(res => {
+        return res.json()
+        // if (res.ok){
+        //   return res.json()
+        // }
+        // throw new Error('Access denied')
+      })
       .then(data => {
 
         let usersHtml = '';
@@ -209,9 +215,13 @@
           }
           usersHtml += `</tr>`
 
-        });
+          document.getElementById('users-data').innerHTML = usersHtml
 
-        document.getElementById('users-data').innerHTML = usersHtml
+        })
+        // .catch(e => {alert(e)});
+        // // if (res.status == 403) {
+        // //   window.location.href = 'errorpage.html'
+        // // }
       })
   }
 
@@ -226,7 +236,12 @@
 
   }
   function showAllBooks(userId) {
-    fetch('http://localhost:8080/books')
+    fetch('http://localhost:8080/books', {
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        }
+    })
       .then(res => res.json())
       .then(data => {
 
@@ -392,10 +407,17 @@
       },
       // body: JSON.stringify(newUser),
     })
-      .then((res) => {
-        showUsers();
+      .then((res) => res.json())
+      .then(dto => {
+        if (dto.success) {
+          showUsers();
+        }
+        else {
+          alert(dto.validationMessages[0]);
+        }
       })
       .catch((error) => {
+        console.error(error);
         alert("Er is iets fouts gegaan");
       });
   }

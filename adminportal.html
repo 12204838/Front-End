@@ -283,7 +283,6 @@
         document.getElementById('reservations-data').innerHTML = reservationsHtml
       })
   }
-
   showReservations();
 
   /**
@@ -385,7 +384,7 @@
     })
       .then((res) => {
         showReservations();
-
+        showAllBorrowedCopies();
       })
       .catch((error) => {
         alert("Er is iets fouts gegaan");
