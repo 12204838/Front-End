@@ -82,6 +82,7 @@
     .then(loginResponseDto => {
       if (loginResponseDto.success) {
         localStorage.setItem('token', loginResponseDto.token);
+        localStorage.setItem('admin', loginResponseDto.admin ? '1' : '0');
 
         admin = JSON.parse(loginResponseDto.admin);
         active = JSON.parse(loginResponseDto.active);

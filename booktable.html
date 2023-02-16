@@ -123,6 +123,11 @@
   </body>
 
   <script>
+    let hasAdminRights = localStorage.getItem('admin') == 1;
+    if (!hasAdminRights) {
+      window.location.href = 'inlogapage.html';
+    }
+
     /**
      * This shows all books in the book repository and fills booktable with content.
      */
