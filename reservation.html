@@ -39,7 +39,7 @@
           <a href="accountSettings.html">Account Settings</a>
         </div>
       </div>
-        <div class="dropdownwt">
+        <div class="dropdownwt" id="adminmenu">
           <button class="dropbtnwt">Admin
             <i class="fa fa-caret-down"></i>
           </button>
@@ -120,6 +120,11 @@
 </body>
 
 <script>
+        //Checks if admin or not
+        let hasAdminRights = localStorage.getItem('admin') == 1;
+  if (!hasAdminRights) {
+    document.getElementById('adminmenu').style.display = 'none';
+  }
     /**
     * This method displays all reservations from the reservations table.
     */
