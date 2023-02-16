@@ -84,33 +84,6 @@
 
       if (email == "" && password == "") {
         alert("You're not active anymore. Apply for a new job.")
-
-    fetch('http://localhost:8080/user/login', {
-      body: JSON.stringify(dto),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: 'POST'
-    })
-    .then(response => response.json())
-    .then(loginResponseDto => {
-      if (loginResponseDto.success) {
-        localStorage.setItem('token', loginResponseDto.token);
-        localStorage.setItem('admin', loginResponseDto.admin ? '1' : '0');
-
-        admin = JSON.parse(loginResponseDto.admin);
-        active = JSON.parse(loginResponseDto.active);
-        //als admin dan naar admin portal anders userportal
-         if (admin == true & active == true){
-          window.location.href = "adminportal.html";
-          }
-          if(admin == false & active == true){
-          window.location.href = "userportal.html";
-          }
-      } else {
-        alert('Niet gelukt');
-
-      }
       else {
         fetch('http://localhost:8080/user/login', {
           body: JSON.stringify(dto),
@@ -123,6 +96,7 @@
           .then(loginResponseDto => {
             if (loginResponseDto.success) {
               localStorage.setItem('token', loginResponseDto.token);
+               localStorage.setItem('admin', loginResponseDto.admin ? '1' : '0');
 
               admin = JSON.parse(loginResponseDto.admin);
               active = JSON.parse(loginResponseDto.active);
