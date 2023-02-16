@@ -51,7 +51,7 @@
         <a href="accountSettings.html">Account Settings</a>
       </div>
     </div>
-      <div class="dropdownwt">
+      <div class="dropdownwt" id="adminmenu">
         <button class="dropbtnwt">Admin
           <i class="fa fa-caret-down"></i>
         </button>
@@ -69,7 +69,7 @@
 
     <section class="py-5 my-5">
       <div class="container">
-        <h1 class="mb-5">Account Settings</h1>
+        <h1 class="mb-5">Administration</h1>
         <div class="bg-white shadow rounded-lg d-block d-sm-flex">
           <div class="profile-tab-nav border-right">
             <div class="p-4">
@@ -80,64 +80,76 @@
             </div>
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
-                <i class="fa fa-home text-center mr-1"></i> 
-                Account
+                <i class="fa fa-user text-center mr-1"></i> 
+                Add User
               </a>
-              <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
-                <i class="fa fa-key text-center mr-1"></i> 
-                Password
+              <a class="nav-link" id="password-tab" data-toggle="pill" href="#addBook" role="tab" aria-controls="password" aria-selected="false">
+                <i class="fa fa-book text-center mr-1"></i> 
+                Add Book
               </a>
             </div>
           </div>
           <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
-              <h3 class="mb-4">Account Settings</h3>
+              <h3 class="mb-4">Add New Employee</h3>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                       <label>Full Name</label>
-                      <input id="fullName" type="text" class="form-control">
+                      <input id="fullName" type="text" class="form-control" placeholder="Full Name">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                       <label>Email</label>
-                      <input id="email"type="text" class="form-control">
+                      <input id="email"type="text" class="form-control" placeholder="Email">
                   </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input id="username"type="text" class="form-control" placeholder="Username">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="password"type="text" class="form-control" placeholder="Password">
+                    </div>
+                  </div>
               </div>
               <div>
-                <button class="btn btn-primary" onclick="changeAccountDetails()">Update</button>
-                <button class="btn btn-light">Cancel</button>
+                <button class="btn btn-success" onclick="addUser()">Add Employee</button>
+                <button class="btn btn-light" onclick="cancelUser()">Cancel</button>
               </div>
             </div>
-            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-              <h3 class="mb-4">Password Settings</h3>
+            <div class="tab-pane fade" id="addBook" role="tabpanel" aria-labelledby="password-tab">
+              <h3 class="mb-4">Add New Book</h3>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                      <label>Old password</label>
-                      <input id= "old-psw" type="password" class="form-control">
+                      <label>Title</label>
+                      <input id= "title" type="text" class="form-control" placeholder="Title">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                      <label>New password</label>
-                      <input id= "psw" type="password" class="form-control">
+                      <label>Author</label>
+                      <input id= "author" type="text" class="form-control" placeholder="Author">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                      <label>Confirm new password</label>
-                      <input id= "psw-repeat" type="password" class="form-control">
+                      <label>ISBN</label>
+                      <input id= "isbn" type="text" class="form-control" placeholder="ISBN">
                   </div>
                 </div>
               </div>
               <div>
-                <button class="btn btn-primary" onclick="checkPassword()">Update</button>
-                <button class="btn btn-light">Cancel</button>
+                <button class="btn btn-success" onclick="addBook()">Add Book</button>
+                <button class="btn btn-light" onclick="cancelBook()">Cancel</button>
               </div>
             </div>
           </div>
@@ -145,113 +157,96 @@
       </div>
     </section>
   </body>
+    <script>
+        function addBook() {
+      // Formulier uitlezen
+      
+      let bookNameInvoer = document.getElementById("title").value;
+      let authorNameInvoer = document.getElementById("author").value;
+      let ISBNInvoer = document.getElementById("isbn").value;
 
-  <script>
+      // Javascript object
+      let newBook = {
+        title: bookNameInvoer,
+        author: authorNameInvoer,
+        isbn: ISBNInvoer,
+      };
 
-function checkAccountDetails(){
-        fetch('http://localhost:8080/user/accountdetails',{
-            headers: {
+      // Fetch call
+      fetch("http://localhost:8080/book/save", {
+        method: "POST",
+        headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         },
+        body: JSON.stringify(newBook),
+      })
+        .then((res) => {
+          alert("Book added");
+          console.log(res.json().validationMessages)
         })
-        .then(res => res.json())
-        .then(data =>{
-          document.getElementById("ProfileName").innerHTML = data.name;
-          document.getElementById("fullName").value = data.name;
-          document.getElementById("email").value = data.email;
+        .catch((error) => {
+            alert("Something went Wrong, check the input fields!");
+        });
 
-        })
-      }
-
-      function changeAccountDetails(){
-        
-        let name = document.getElementById("fullName").value;
-        let email = document.getElementById("email").value;
-
-        
-        let newInfo = {
-            name: name,
-            email: email,
-        } 
-        fetch('http://localhost:8080/user/change/account',{
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-            }, body: JSON.stringify(newInfo),
-        })
-        .then(res => res.json())
-        .then(data =>{
-            
-            alert("Account details have been changed");
-              //console.log(this.responseText);
-          })
-        }
-
-function checkPassword(){
-        fetch('http://localhost:8080/user/checkpassword',{
-            headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        })
-        .then(res => res.json())
-        .then(data =>{
-            let oldData= data.password
-            console.log(oldData)
-            oldPsw = document.getElementById("old-psw").value;
-            console.log(oldPsw)
-            if (oldPsw == oldData){
-
-                if (passwordValidation()){
-                    changePassword();
-                }else{
-                    alert("Passwords don't match");
-                }
-            }
-            else{
-                console.log("False");
-            }
-            //console.log(this.responseText);
-        })
+        cancelBook();
     }
-    
-    
-    function changePassword(){
-        
-        let password = document.getElementById("psw-repeat").value;
-        
-        let newInfo = {
-            password: password,
-        } 
-        fetch('http://localhost:8080/user/changepassword',{
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-            }, body: JSON.stringify(newInfo),
-        })
-        .then(res => res.json())
-        .then(data =>{
-            
-            alert("Password has been changed");
-              //console.log(this.responseText);
-          })
-        }
 
 
-    function passwordValidation() {
-      let password = document.getElementById("psw").value;
-      let pswRepeat = document.getElementById("psw-repeat").value;
 
-      if (password === pswRepeat) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    checkAccountDetails();
+    function addUser() {
+    //formulier uitlezen
+    let nameInput = document.getElementById("fullName").value;
+    let emailInput = document.getElementById("email").value;
+    let usernameInput = document.getElementById("username").value;
+    let passwordInput = document.getElementById("password").value;
+
+
+    // Javascript object
+    let newUser = {
+      name: nameInput,
+      email: emailInput,
+      username: usernameInput,
+      password: passwordInput,
+      admin: false,
+      active: false,
+    };
+
+    // Fetch call
+    fetch('http://localhost:8080/user/save', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem('token')
+      },
+      body: JSON.stringify(newUser),
+    })
+      .then((res) => {
+        alert("Employee has been added");
+
+      })
+      .catch((error) => {
+        alert("Something went wrong, check all input fields");
+      });
+
+    cancelUser();
+
+  }
+
+  function cancelUser(){
+
+    document.getElementById("fullName").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+  }
+
+  function cancelBook(){
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("isbn").value = "";
+  }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
