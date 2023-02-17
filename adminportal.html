@@ -154,18 +154,18 @@
   <div class="container">
     <h2>Lending History</h2>
     <button onclick=showLendingContainer()>
-      Available books
+      Currently borrowed books
     </button>
   </div>
   <div id="LenDiv" class="containertable container">
     <table class="table styled-table">
       <thead>
         <tr>
-          <th>Lending History ID</th>
-          <th>Bookcopyid</th>
+          <!-- <th style="display:none">Lending History ID</th> -->
+          <th>Working Talent Id</th>
+          <th>Title</th>
+          <th>Employee Name</th>
           <th>Startdate</th>
-          <th>Enddate</th>
-          <th>Userid</th>
           <th>Return book</th>
         </tr>
       </thead>
@@ -202,8 +202,8 @@
 </body>
 
 <script>
-      //Checks if admin or not
-      let hasAdminRights = localStorage.getItem('admin') == 1;
+  //Checks if admin or not
+  let hasAdminRights = localStorage.getItem('admin') == 1;
   if (!hasAdminRights) {
     document.getElementById('adminmenu').style.display = 'none';
   }
@@ -352,11 +352,11 @@
         data.forEach(borrowedcopy => {
           borrowedcopiesHtml += `
                                       <tr > 
-                                          <td >${borrowedcopy.id}</td>
-                                          <td >${borrowedcopy.bookCopyId}</td> 
-                                              <td>${borrowedcopy.startDate}</td>
-                                              <td>${borrowedcopy.endDate}</td> 
-                                              <td>${borrowedcopy.userId}</td>       
+                                          <td style="display:none">${borrowedcopy.id}</td>
+                                          <td >${borrowedcopy.wtId}</td> 
+                                              <td>${borrowedcopy.title}</td>
+                                              <td>${borrowedcopy.name}</td> 
+                                              <td>${borrowedcopy.startDate}</td> 
                                               <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>
                                       </tr>`;
 
@@ -442,17 +442,17 @@
   }
 
   function returnBook(borrowedCopyId) {
-      // Fetch call
-      fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
+    // Fetch call
+    fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        showAllBorrowedCopies();
       })
-        .then((res) => {
-          showAllBorrowedCopies();
-        })
         .catch((error) => {
           alert("Er is iets fouts gegaan");
         });
@@ -471,6 +471,7 @@ function myFunction2() {
   }
   
 }
+
 </script>
 
 </html>

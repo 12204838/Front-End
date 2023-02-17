@@ -132,7 +132,9 @@
           let booksHtml = "";
           data.forEach((book) => {
             booksHtml += `
-                                       <tr >
+                                       <tr` 
+                                       // onclick='alert("Hello ${book.title}")'
+                                       `>
                                            <td >${book.id}</td>
                                            <td >${book.title}</td>
                                                <td>${book.author}</td>
