@@ -84,6 +84,7 @@
 
       if (email == "" && password == "") {
         alert("You're not active anymore. Apply for a new job.")
+      }
       else {
         fetch('http://localhost:8080/user/login', {
           body: JSON.stringify(dto),
@@ -116,6 +117,7 @@
           })
       }
     }
+    
 
     document.getElementById('password').onkeydown = function (event) {
       if (event.keyCode == 13) {
