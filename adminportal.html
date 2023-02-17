@@ -133,7 +133,7 @@
   <div class="container">
     <h2>Lending History</h2>
     <button onclick=showLendingContainer()>
-      Available books
+      Currently borrowed books
     </button>
   </div>
   <div id="LenDiv" class="containertable container">
@@ -157,8 +157,8 @@
 
 </body>
 <script>
-      //Checks if admin or not
-      let hasAdminRights = localStorage.getItem('admin') == 1;
+  //Checks if admin or not
+  let hasAdminRights = localStorage.getItem('admin') == 1;
   if (!hasAdminRights) {
     document.getElementById('adminmenu').style.display = 'none';
   }
@@ -397,21 +397,21 @@
   }
 
   function returnBook(borrowedCopyId) {
-      // Fetch call
-      fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
+    // Fetch call
+    fetch(`http://localhost:8080/borrowedcopy/${borrowedCopyId}/return`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        showAllBorrowedCopies();
       })
-        .then((res) => {
-          showAllBorrowedCopies();
-        })
-        .catch((error) => {
-          alert("Er is iets fouts gegaan");
-        });
-    }
+      .catch((error) => {
+        alert("Er is iets fouts gegaan");
+      });
+  }
 </script>
 
 </html>
