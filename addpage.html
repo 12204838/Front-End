@@ -22,47 +22,62 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Add</title>
   </head>
   <body>
-    <header class="w3-container w3-teal">
-      <h1>Working Talent</h1>
+    <div class= "wholehead" id="head">
+      <div class="header" id="myHeader">
+        <h2>Working Talent
 
-      <form align="right" name="form1" method="post" action="inlogapage.html">
-        <label class="logoutLblPos">
-          <input
-            name="submit2"
-            type="submit"
-            id="submit2"
-            value="log out"
-            onclick="localStorage.clear()"
-          />
-        </label>
-      </form>
-    </header>
-    <div class="navbarwt">
-      <div class="dropdownwt">
-      <button class="dropbtnwt">User
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-contentwt">
-        <a  href="userportal.html">User Portal</a>
-        <a href="showbooks.html">Books</a>
-        <a href="accountSettings.html">Account Settings</a>
+        </h2>
       </div>
-    </div>
-      <div class="dropdownwt" id="adminmenu">
-        <button class="dropbtnwt">Admin
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-contentwt">
-          <a  href="adminportal.html">Admin portal</a>
-          <a  href="booktable.html">Book Table</a>
-          <a  href="bookcopy.html">Copy Table</a>
-          <a  href="userstable.html"> User Table</a>
-          <a  href="reservation.html"> Reservation Table</a>
-          <a  href="borrowedcopy.html"> Borrowedcopy Table</a>
+
+
+      <div id="navbarwt" class="navbarwt">
+
+        <div class="dropdownwt">
+          <button class="dropbtnwt" onclick="location.href='showbooks.html'">
+            Home
+          </button>
         </div>
+
+        <div class="dropdownwt">
+          <button class="dropbtnwt">
+            My account
+            
+          </button>
+          <div class="dropdown-contentwt">
+            <a href="userportal.html">User Portal</a>
+            <a href="accountSettings.html">Account Settings</a>
+          </div>
+        </div>
+        <div class="dropdownwt" id="adminmenu">
+          <button class="dropbtnwt">
+            Admin
+            
+          </button>
+          <div class="dropdown-contentwt">
+            <a href="adminportal.html">Admin portal</a>
+            <a href="booktable.html">Book Table</a>
+            <a href="bookcopy.html">Copy Table</a>
+            <a href="userstable.html"> User Table</a>
+            <a href="reservation.html"> Reservation Table</a>
+            <a href="borrowedcopy.html"> Borrowedcopy Table</a>
+            <a href="addpage.html">Add Books/Users</a>
+          </div>
+        </div>
+        <form align="right" name="form1" method="post" action="inlogapage.html">
+          <label class="logoutLblPos">
+            <input
+              name="submit2"
+              type="submit"
+              id="submit2"
+              value="Log out"
+              onclick="localStorage.clear()"
+              class="btn btn-success"
+            />
+          </label>
+        </form>
       </div>
     </div>
     
@@ -156,6 +171,15 @@
         </div>
       </div>
     </section>
+
+
+    <footer class="w3-container w3-teal">
+      <br>
+      <br>
+      <h4>Working Talent Dev</h4>
+      <br>
+      <br>
+    </footer>
   </body>
     <script>
         function addBook() {
@@ -247,6 +271,20 @@
     document.getElementById("author").value = "";
     document.getElementById("isbn").value = "";
   }
+
+  window.onscroll = function() {myFunction2()};
+
+var head = document.getElementById("navbarwt");
+var sticky = head.offsetTop;
+
+function myFunction2() {
+  if (window.pageYOffset > sticky) {
+    head.classList.add("sticky");
+  } else {
+    head.classList.remove("sticky");
+  }
+  
+}
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

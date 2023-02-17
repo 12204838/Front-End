@@ -22,40 +22,64 @@
   </head>
 
   <body>
-    <header class="w3-container w3-teal">
-      <h1>Working Talent</h1>
-      <form align="right" name="form1" method="post" action="inlogapage.html">
-        <label class="logoutLblPos">
-        <input name="submit2" type="submit" id="submit2" value="log out" onclick = "localStorage.clear()">
-        </label>
-      </form>
-    </header>
+    <div class= "wholehead" id="head">
+      <div class="header" id="myHeader">
+        <h2>Working Talent
 
-    <div class="navbarwt">
-      <div class="dropdownwt">
-      <button class="dropbtnwt">User
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-contentwt">
-        <a  href="userportal.html">User Portal</a>
-        <a href="showbooks.html">Books</a>
-        <a href="accountSettings.html">Account Settings</a>
+        </h2>
       </div>
-    </div>
-      <div class="dropdownwt" id="adminmenu">
-        <button class="dropbtnwt">Admin
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-contentwt">
-          <a  href="adminportal.html">Admin portal</a>
-          <a  href="booktable.html">Book Table</a>
-          <a  href="bookcopy.html">Copy Table</a>
-          <a  href="userstable.html"> User Table</a>
-          <a  href="reservation.html"> Reservation Table</a>
-          <a  href="borrowedcopy.html"> Borrowedcopy Table</a>
+
+
+      <div id="navbarwt" class="navbarwt">
+
+        <div class="dropdownwt">
+          <button class="dropbtnwt" onclick="location.href='showbooks.html'">
+            Home
+          </button>
         </div>
+
+        <div class="dropdownwt">
+          <button class="dropbtnwt">
+            My account
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-contentwt">
+            <a href="userportal.html">User Portal</a>
+            <a href="accountSettings.html">Account Settings</a>
+          </div>
+        </div>
+        <div class="dropdownwt" id="adminmenu">
+          <button class="dropbtnwt">
+            Admin
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-contentwt">
+            <a href="adminportal.html">Admin portal</a>
+            <a href="booktable.html">Book Table</a>
+            <a href="bookcopy.html">Copy Table</a>
+            <a href="userstable.html"> User Table</a>
+            <a href="reservation.html"> Reservation Table</a>
+            <a href="borrowedcopy.html"> Borrowedcopy Table</a>
+            <a href="addpage.html">Add Books/Users</a>
+          </div>
+        </div>
+        <form align="right" name="form1" method="post" action="inlogapage.html">
+          <label class="logoutLblPos">
+            <input
+              name="submit2"
+              type="submit"
+              id="submit2"
+              value="Log out"
+              onclick="localStorage.clear()"
+              class="btn btn-success"
+            />
+          </label>
+        </form>
       </div>
     </div>
+
+
+
     <div class="container">
       <table class="table styled-table">
         <thead>
@@ -73,52 +97,13 @@
       </table>
     </div>
 
-    <div class="flex-container">
-      <div class="container">
-        <label for="bookid">Book ID</label>
-        <input id="bookid" type="text" />
-        <br />
-        <label for="bookName">Title</label>
-        <input type="text" id="bookName" />
-        <br />
-        <label for="authorName">author</label>
-        <input id="authorName" type="text" />
-        <br />
-        <label for="quantity">ISBN</label>
-        <input type="text" id="quantity" />
-        <br />
-      </div>
-
-      <div class="container">
-        <button
-          class="add-book-button button"
-          type="button"
-          onclick="addBook()"
-        >
-          add book
-        </button>
-        <br />
-        <button
-          class="update-book-button button"
-          type="button"
-          onclick="updateBook()"
-        >
-          edit book
-        </button>
-        <br />
-        <button
-          class="delete-book-button button"
-          type="button"
-          onclick="deleteBook()"
-        >
-          delete book
-        </button>
-      </div>
-    </div>
 
     <footer class="w3-container w3-teal">
-      <h5>Footer</h5>
-      <p>Footer information goes here</p>
+      <br>
+      <br>
+      <h4>Working Talent Dev</h4>
+      <br>
+      <br>
     </footer>
   </body>
 
@@ -342,6 +327,20 @@
           alert("Er is iets fouts gegaan");
         });
     }
+
+    window.onscroll = function() {myFunction2()};
+
+var head = document.getElementById("navbarwt");
+var sticky = head.offsetTop;
+
+function myFunction2() {
+  if (window.pageYOffset > sticky) {
+    head.classList.add("sticky");
+  } else {
+    head.classList.remove("sticky");
+  }
+  
+}
     showAllBooks();
   </script>
 </html>
