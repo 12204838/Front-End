@@ -83,8 +83,7 @@
       let password = document.getElementById("password").value;
 
       if (email == "" && password == "") {
-        alert("You're not active anymore. Apply for a new job.")
-      }
+        alert("You're not active anymore. Apply for a new job.")}
       else {
         fetch('http://localhost:8080/user/login', {
           body: JSON.stringify(dto),
