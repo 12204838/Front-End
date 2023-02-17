@@ -61,9 +61,10 @@
           <tr>
             <th>Lending History ID</th>
             <th>workingTalentId</th>
+            <th>Book Title</th>
+            <th>Name</th>
             <th>Startdate</th>
             <th>Enddate</th>
-            <th>Userid</th>
             <th>Return Book</th>
           </tr>
         </thead>
@@ -99,11 +100,18 @@
             borrowedcopiesHtml += `
                                       <tr > 
                                           <td >${borrowedcopy.id}</td>
-                                          <td >${borrowedcopy.bookId}.${borrowedcopy.wtId}</td> 
-                                              <td>${borrowedcopy.startDate}</td>
-                                              <td>${borrowedcopy.endDate}</td> 
-                                              <td>${borrowedcopy.userId}</td> 
-                                              <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>       
+                                          <td >${borrowedcopy.wtId}</td>
+                                          <td >${borrowedcopy.bookTitle}</td>
+                                          <td >${borrowedcopy.name}</td> 
+                                          <td>${borrowedcopy.startDate}</td>`
+
+                                          if (borrowedcopy.endDate == null) {
+                                            borrowedcopiesHtml += `<td>---</td>`
+                                          }
+                                          else {
+                                            borrowedcopiesHtml += `<td>${borrowedcopy.endDate}</td>`
+                                          }
+                                          borrowedcopiesHtml += `<td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>       
                                       </tr>`;
           });
 
