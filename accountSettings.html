@@ -198,7 +198,7 @@ function checkAccountDetails(){
             name: name,
             email: email,
         } 
-        fetch('http://localhost:8080/user/change/account',{
+        fetch('http://localhost:8080/user/change/account/detail',{
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -207,8 +207,9 @@ function checkAccountDetails(){
         })
         .then(res => res.json())
         .then(data =>{
-            
+          checkAccountDetails();
             alert("Account details have been changed");
+            
               //console.log(this.responseText);
           })
         }
