@@ -79,7 +79,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Choose Book Copy</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -101,7 +101,7 @@
 
   <div class="container">
     <h2 style="display: none;">Available Books</h2>
-    <button onclick=showBookContainer() style="display : none;">
+    <button class="button-4" onclick=showBookContainer() style="display : none;">
       Available books
     </button>
 
@@ -128,7 +128,7 @@
 
   <div class="container">
     <h2>Pending Reservations</h2>
-    <button onclick=showResContainer()>
+    <button class="button-4" onclick=showResContainer()>
       Pending Reservations
     </button>
   </div>
@@ -153,7 +153,7 @@
   </div>
   <div class="container">
     <h2>Lending History</h2>
-    <button onclick=showLendingContainer()>
+    <button class="button-4"onclick=showLendingContainer()>
       Currently borrowed books
     </button>
   </div>
@@ -272,7 +272,7 @@
           } else {
             booksHtml += `        <td style= "color:red">Unavailable at this moment</td>`
           }
-          booksHtml += `            <td><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>  
+          booksHtml += `            <td><button type= "button" onclick = "makeReservation(${book.id})" class="button-4">add</button></td>  
                                       </tr>`;
 
         });
@@ -324,9 +324,9 @@
                         <td>${reservation.id}</td>
                         <td>${reservation.bookTitle}</td>
                         <td>${reservation.nameEmployee}</td>
-                        <td><button class ="" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        <td><button class ="button-4" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
                         Approve</button></td>
-                        <td><button class ="" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        <td><button class ="button-4" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                         </tr>
                         `}
         });
@@ -357,7 +357,7 @@
                                               <td>${borrowedcopy.title}</td>
                                               <td>${borrowedcopy.name}</td> 
                                               <td>${borrowedcopy.startDate}</td> 
-                                              <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="editbtn">return book</button></td>
+                                              <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="button-4">return book</button></td>
                                       </tr>`;
 
         });
@@ -408,7 +408,7 @@
           copiesHtml += `
                 <tr > 
                     <td>${copy.workingTalentId}</td> 
-                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId},${reservationId})" data-bs-toggle="modal" data-bs-target="#reservationModal"></button></td> 
+                    <td> <button class = "button-4" onclick = "chooseCopy(${copy.id},${userId},${reservationId})" data-bs-toggle="modal" data-bs-target="#reservationModal">Assign</button></td> 
                 </tr>
                 `
         })

@@ -101,10 +101,10 @@
  
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: fit-content;">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Assign Book </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="modal-table">
@@ -119,6 +119,20 @@
 
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="borrowedCopyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:fit-content;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Lending History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="borrowed-modal-table">
         </div>
       </div>
     </div>
@@ -170,7 +184,7 @@
 
 
           usersHtml += `
-                <tr>
+                <tr onclick = "showBorrowedCopiesByUser(${user.id})" data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">
                     <td>${user.id}</td>
                     <td style="display: none">${user.active}</td>
 
@@ -187,19 +201,19 @@
           }
           usersHtml += `
                     <td>
-                      <button type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
+                      <button class="button-4" type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
                         Set admin
                       </button>
                     </td>
                     <td>
-                      <button type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Assign book copy
                       </button>
                     </td>`
           if (user.active) {
             usersHtml += `<td>
-                                      <button type="button" onclick = "confirmDeactivation(${user.id})">
-                                        deactivate user
+                                      <button class="button-4" type="button" onclick = "confirmDeactivation(${user.id})">
+                                        Deactivate user
                                       </button>
                                     </td>`
           }
@@ -255,7 +269,7 @@
                                           <td>${book.title}</td> 
                                               <td>${book.author}</td>
                                               <td>
-                                                <button class = button onclick = "viewCopies(${book.id},${userId})" data-bs-target="#exampleModal">
+                                                <button class="button-4" onclick = "viewCopies(${book.id},${userId})" data-bs-target="#exampleModal">
                                                   Show available copies  
                                                 </button>
                                                 </td>
@@ -506,6 +520,51 @@
 
   }
 
+  function showBorrowedCopiesByUser(userid) {
+        fetch(`http://localhost:8080/user/${userid}/borrowedcopies`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+
+              let borrowedCopiesHtml = `<table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Working Talent Id</th>
+                  <th>Book Title</th>
+                  <th>Startdate     </th>
+                  <th>Enddate</th>
+                </tr>
+              </thead>
+              <tbody>`;
+                data.forEach(borrowedcopy => {
+                   
+                  
+                  
+                  borrowedCopiesHtml += `
+                                      <tr> 
+                                        <td>${borrowedcopy.wtId}</td> 
+                                        <td>${borrowedcopy.bookTitle}</td>
+                                        <td>${borrowedcopy.startDate}     </td>`
+                                        if (borrowedcopy.endDate == null) {
+                                            borrowedCopiesHtml += `<td>---</td>`
+                                        }
+                                        else {
+                                            borrowedCopiesHtml += `<td>${borrowedcopy.endDate}</td>`
+                                        }
+                                        borrowedCopiesHtml += `</tr>`;
+
+                });
+                borrowedCopiesHtml += ` </tbody>
+                     </table>`;
+                document.getElementById("borrowed-modal-table").innerHTML = borrowedCopiesHtml;
+                //console.log(this.responseText);
+            })
+    }
+
   window.onscroll = function() {myFunction2()};
 
 var head = document.getElementById("navbarwt");
@@ -584,6 +643,14 @@ function myFunction2() {
   .slider.round:before {
     border-radius: 50%;
   }
+
+    tr:hover {
+          background-color: #ffff99;
+        }
+    .styled-table tbody tr:nth-of-type(even):hover {
+      background-color: #ffff99;
+    }
+
 </style>
 
 </html>
