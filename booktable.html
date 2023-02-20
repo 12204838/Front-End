@@ -169,13 +169,13 @@ fetch('http://localhost:8080/user/logout/empty/token', {
           let booksHtml = "";
           data.forEach((book) => {
             booksHtml += `
-                                       <tr onclick = "viewBookCopies(${book.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                           <td >${book.id}</td>
-                                           <td >${book.title}</td>
-                                               <td>${book.author}</td>
-                                               <td>${book.isbn}</td>
-                                               <td>${book.availableBookCopies}/${book.totalBookCopies}</td>
-                                               <td><button class="button-4" type= "button" onclick = "addBookCopies2(${book.id})">Add</button></td>
+                                       <tr onclick = "viewBookCopies(${book.id})">
+                                           <td data-bs-toggle="modal" data-bs-target="#exampleModal">${book.id}</td>
+                                           <td data-bs-toggle="modal" data-bs-target="#exampleModal">${book.title}</td>
+                                               <td data-bs-toggle="modal" data-bs-target="#exampleModal">${book.author}</td>
+                                               <td data-bs-toggle="modal" data-bs-target="#exampleModal">${book.isbn}</td>
+                                               <td data-bs-toggle="modal" data-bs-target="#exampleModal">${book.availableBookCopies}/${book.totalBookCopies}</td>
+                                               <td onclick ='event.stopPropagation();return false;'><button class="button-4" type= "button" onclick = "addBookCopies2(${book.id})">Add</button></td>
                                                <td style="display: none"><button class="button-4" type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>
                                        </tr>`;
           });
@@ -268,9 +268,11 @@ fetch('http://localhost:8080/user/logout/empty/token', {
       if (amount == null || amount == "") {
         text = "User cancelled the prompt.";
       } else {
+        
         return amount;
       }
     }
+
 
     /**
      * This method saves an bookcopy in the bookcopy table by book id.

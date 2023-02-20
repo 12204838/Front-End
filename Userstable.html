@@ -203,12 +203,12 @@ fetch('http://localhost:8080/user/logout/empty/token', {
 
 
           usersHtml += `
-                <tr onclick = "showBorrowedCopiesByUser(${user.id})" data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">
-                    <td>${user.id}</td>
+                <tr onclick = "showBorrowedCopiesByUser(${user.id})">
+                    <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">${user.id}</td>
                     <td style="display: none">${user.active}</td>
 
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
+                    <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal" >${user.name}</td>
+                    <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">${user.email}</td>
                     <td style="display: none">${user.password}</td>
                     <td style="display: none">${user.username}</td>
                     `
@@ -218,26 +218,29 @@ fetch('http://localhost:8080/user/logout/empty/token', {
           else {
             usersHtml += `<td></td>`
           }
-          usersHtml += `
-                    <td>
-                      <button class="button-4" type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
-                        Set admin
-                      </button>
-                    </td>
-                    <td>
-                      <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Assign book copy
-                      </button>
-                    </td>`
           if (user.active) {
             usersHtml += `<td>
+                                  <button class="button-4" type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
+                                            Set admin
+                                          </button>
+                                        </td>
+                                        <td>
+                                          <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Assign book copy
+                                          </button>
+                                          </td>
+                                          <td>
                                       <button class="button-4" type="button" onclick = "confirmDeactivation(${user.id})">
                                         Deactivate user
                                       </button>
+                                     
                                     </td>`
           }
           else {
-            usersHtml += `<td></td>`
+            usersHtml += 
+            `<td></td>
+            <td></td>
+            <td></td>`
           }
           usersHtml += `</tr>`
 

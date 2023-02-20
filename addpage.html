@@ -145,7 +145,13 @@
                       <label>Title</label>
                       <input id= "title" type="text" class="form-control" placeholder="Title">
                   </div>
-                </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Add amount</label>
+                        <input id= "amountbooks" type="number" class="form-control" placeholder="Amountr" min="1">
+                    </div>
+                  </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
@@ -203,6 +209,7 @@ fetch('http://localhost:8080/user/logout/empty/token', {
       let bookNameInvoer = document.getElementById("title").value;
       let authorNameInvoer = document.getElementById("author").value;
       let ISBNInvoer = document.getElementById("isbn").value;
+      let amountBooks = document.getElementById("amountbooks").value;
 
       // Javascript object
       let newBook = {
@@ -221,17 +228,41 @@ fetch('http://localhost:8080/user/logout/empty/token', {
         body: JSON.stringify(newBook),
       })
         .then((res) => {
-          alert("Book added");
           console.log(res.json().validationMessages)
+          addCopies()
         })
         .catch((error) => {
             alert("Something went Wrong, check the input fields!");
         });
 
-        cancelBook();
+
     }
 
+function addCopies(){
+  let ISBNInvoer = document.getElementById("isbn").value;
+  let amountBooks = document.getElementById("amountbooks").value;
 
+  let newCopies ={
+    isbn: ISBNInvoer,
+    amount: amountBooks,
+  }
+
+  fetch("http://localhost:8080/book/isbn/savecopy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(newCopies),
+      })
+      .then((res) => {
+          alert("Book added");
+        })
+        .catch((error) => {
+            alert("Something went Wrong, check the input fields!");
+        });
+        cancelBook();
+}
 
     function addUser() {
     //formulier uitlezen
