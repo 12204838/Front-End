@@ -166,9 +166,9 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                         <td>${reservation.id}</td>
                         <td>${reservation.bookTitle}</td>
                         <td>${reservation.nameEmployee}</td>
-                        <td><button class ="" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        <td><button class ="button-4" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
                         Approve</button></td>
-                        <td><button class ="" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        <td><button class ="button-4" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
                         </tr>
                         `}
                 });
@@ -232,7 +232,7 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                     copiesHtml += `
                 <tr > 
                     <td>${copy.workingTalentId}</td> 
-                    <td> <button class = button onclick = "chooseCopy(${copy.id},${userId},${reservationId})" data-bs-toggle="modal" data-bs-target="#reservationModal"></button></td> 
+                    <td> <button class = "button-4" onclick = "chooseCopy(${copy.id},${userId},${reservationId})" data-bs-toggle="modal" data-bs-target="#reservationModal">Assign</button></td> 
                 </tr>
                 `
                 })

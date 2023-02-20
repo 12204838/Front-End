@@ -22,16 +22,12 @@
   </head>
 
   <body>
-    <div class= "wholehead" id="head">
+    <div class="wholehead" id="head">
       <div class="header" id="myHeader">
-        <h2>Working Talent
-
-        </h2>
+        <h2>Working Talent</h2>
       </div>
 
-
       <div id="navbarwt" class="navbarwt">
-
         <div class="dropdownwt">
           <button class="dropbtnwt" onclick="location.href='showbooks.html'">
             Home
@@ -77,8 +73,6 @@
       </div>
     </div>
 
-
-
     <div class="container">
       <table class="table styled-table">
         <thead>
@@ -96,17 +90,42 @@
       </table>
     </div>
 
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Book Copy Information</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="modal-table">
+            
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="w3-container w3-teal">
-      <br>
-      <br>
+      <br />
+      <br />
       <h4>Working Talent Dev</h4>
-      <br>
-      <br>
+      <br />
+      <br />
     </footer>
   </body>
 
   <script>
+
 
 function deleteTokenDataBase(){
 
@@ -129,16 +148,18 @@ fetch('http://localhost:8080/user/logout/empty/token', {
   if (!hasAdminRights) {
     document.getElementById('adminmenu').style.display = 'none';
   }
+
+
     /**
      * This shows all books in the book repository and fills booktable with content.
      */
     function showAllBooks() {
-
-      fetch("http://localhost:8080/books/availabletotalcopies", {      
-      headers: {
+      fetch("http://localhost:8080/books/availabletotalcopies", {
+        headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
-        }})
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log("het is gelukt");
@@ -148,14 +169,14 @@ fetch('http://localhost:8080/user/logout/empty/token', {
           let booksHtml = "";
           data.forEach((book) => {
             booksHtml += `
-                                       <tr>
+                                       <tr onclick = "viewBookCopies(${book.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                            <td >${book.id}</td>
                                            <td >${book.title}</td>
                                                <td>${book.author}</td>
                                                <td>${book.isbn}</td>
                                                <td>${book.availableBookCopies}/${book.totalBookCopies}</td>
-                                               <td><button type= "button" onclick = "addBookCopies2(${book.id})" class="editbtn">add</button></td>
-                                               <td style="display: none"><button type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>
+                                               <td><button class="button-4" type= "button" onclick = "addBookCopies2(${book.id})">Add</button></td>
+                                               <td style="display: none"><button class="button-4" type= "button" onclick = "makeReservation(${book.id})" class="editbtn">add</button></td>
                                        </tr>`;
           });
 
@@ -231,10 +252,9 @@ fetch('http://localhost:8080/user/logout/empty/token', {
       })
         .then((res) => {
           showAllBooks();
-          console.log(res.json().validationMessages)
+          console.log(res.json().validationMessages);
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
 
     /**
@@ -344,19 +364,102 @@ fetch('http://localhost:8080/user/logout/empty/token', {
         });
     }
 
-    window.onscroll = function() {myFunction2()};
+    window.onscroll = function () {
+      myFunction2();
+    };
 
-var head = document.getElementById("navbarwt");
-var sticky = head.offsetTop;
+    var head = document.getElementById("navbarwt");
+    var sticky = head.offsetTop;
 
-function myFunction2() {
-  if (window.pageYOffset > sticky) {
-    head.classList.add("sticky");
-  } else {
-    head.classList.remove("sticky");
-  }
-  
-}
+    function myFunction2() {
+      if (window.pageYOffset > sticky) {
+        head.classList.add("sticky");
+      } else {
+        head.classList.remove("sticky");
+      }
+    }
+
+    function viewBookCopies(bookid) {
+      fetch(`http://localhost:8080/book/${bookid}/totalcopies`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          let booksHtml = `<table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Working Talent Id</th>
+                  <th>Status </th>
+                  <th>Times Borrowed</th>
+                </tr>
+              </thead>
+              <tbody>`;
+          data.forEach((copy) => {
+            booksHtml += `
+                                 <tr onclick = "viewCopyHistory(${copy.id})" data-bs-target="#exampleModal">
+                                     <td >${copy.workingTalentId}</td>`;
+                                     if(copy.status == "Available"){
+                                      booksHtml +=`<td style="color:green">${copy.status}</td>`;
+                                    }else if(copy.status == "Borrowed"){
+                                      booksHtml +=`<td style="color:orange">${copy.status}</td>`;
+                                    }else{
+                                      booksHtml +=`<td style="color:red">${copy.status}</td>`;
+                                    }
+                                    booksHtml +=`
+                                         <td>${copy.timesBorrowed}</td>
+                                 </tr>`;
+          });
+          booksHtml += ` </tbody>
+                     </table>`;
+          document.getElementById("modal-table").innerHTML = booksHtml;
+          //console.log(this.responseText);
+        });
+    }
+
+    function viewCopyHistory(copyid) {
+      fetch(`http://localhost:8080/bookcopy/${copyid}/history`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          let booksHtml = `<table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Startdate </th>
+                  <th>Enddate</th>
+                </tr>
+              </thead>
+              <tbody>`;
+          data.forEach((borrowedcopy) => {
+            booksHtml += `
+                                 <tr>
+                                     <td >${borrowedcopy.name}</td>
+                                     <td >${borrowedcopy.startDate}</td>
+                                         <td>${borrowedcopy.endDate}</td>
+                                 </tr>`;
+          });
+          booksHtml += ` </tbody>
+                     </table>`;
+          document.getElementById("modal-table").innerHTML = booksHtml;
+          //console.log(this.responseText);
+        });
+    }
     showAllBooks();
   </script>
+
+  <style>
+    tr:hover {
+          background-color: #ffff99;
+        }
+    .styled-table tbody tr:nth-of-type(even):hover {
+      background-color: #ffff99;
+    }
+  </style>
 </html>
