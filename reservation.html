@@ -80,10 +80,10 @@
             <thead>
                 <tr>
                     <th>Reservation ID</th>
-                    <th>Book title</th>
+                    <th>Book Title</th>
                     <th>Employee</th>
-                    <th>Approve?</th>
-                    <th>Delete?</th>
+                    <th>Approve</th>
+                    <th>Deny</th>
                 </tr>
             </thead>
 
@@ -169,7 +169,7 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                         <td>${reservation.nameEmployee}</td>
                         <td><button class ="button-4" type="button" onclick="getIdByReservation(${reservation.id})" data-bs-toggle="modal" data-bs-target="#reservationModal">
                         Approve</button></td>
-                        <td><button class ="button-4" type="button" onclick ="deleteReservation(${reservation.id})">Delete</button></td>
+                        <td><button class ="button-4" type="button" onclick ="deleteReservation(${reservation.id})">Deny</button></td>
                         </tr>
                         `}
                 });

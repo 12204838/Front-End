@@ -82,15 +82,15 @@
       <thead>
         <tr>
           <th>User ID</th>
-          <th style="display: none">active</th>
-          <th>Naam</th>
-          <th>email</th>
-          <th style="display: none">password</th>
-          <th style="display: none">username</th>
-          <th>admin</th>
-          <th>set admin</th>
-          <th>assign book</th>
-          <th>deactivate user</th>
+          <th style="display: none">Active</th>
+          <th>Employee</th>
+          <th>Email</th>
+          <th style="display: none">Password</th>
+          <th style="display: none">Username</th>
+          <th>Admin</th>
+          <th>Set Admin</th>
+          <th>Assign Book</th>
+          <th>Deactivate User</th>
         </tr>
       </thead>
       <tbody id="users-data">
@@ -114,7 +114,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Booktitle</th>
+                <th>Book Title</th>
               </tr>
             </thead>
             <tbody id="allBooksTable">
@@ -207,7 +207,7 @@
                           </td>
                           <td>
                             <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                              Assign book copy
+                              Assign bookcopy
                             </button>
                             </td>
                             <td>
@@ -315,7 +315,7 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                                         </td>
                                         <td>
                                           <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Assign book copy
+                                            Assign bookcopy
                                           </button>
                                           </td>
                                           <td>
@@ -367,7 +367,7 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                               <thead>
                                   <tr>
                                       <th style="display:none">Book Id</th>
-                                      <th>Booktitle</th>
+                                      <th>Book Title</th>
                                       <th>Author</th>
                                       <th>Show available copies</th>
                                   </tr>
@@ -646,8 +646,8 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                 <tr>
                   <th>Working Talent Id</th>
                   <th>Book Title</th>
-                  <th>Startdate     </th>
-                  <th>Enddate</th>
+                  <th>Start Date </th>
+                  <th>End Date</th>
                 </tr>
               </thead>
               <tbody>`;
