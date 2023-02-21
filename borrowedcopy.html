@@ -82,11 +82,11 @@
         <thead>
           <tr>
             <th>Lending History ID</th>
-            <th>workingTalentId</th>
+            <th>Working Talent Id</th>
             <th>Book Title</th>
-            <th>Name</th>
-            <th>Startdate</th>
-            <th>Enddate</th>
+            <th>Employee</th>
+            <th>Start date</th>
+            <th>End date</th>
             <th>Return Book</th>
           </tr>
         </thead>
@@ -152,13 +152,16 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                                           <td>${borrowedcopy.startDate}</td>`
 
                                           if (borrowedcopy.endDate == null) {
-                                            borrowedcopiesHtml += `<td>---</td>`
+                                            borrowedcopiesHtml += `<td>---</td>
+                                                              <td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="button-4">Return Book</button></td>`
                                           }
                                           else {
-                                            borrowedcopiesHtml += `<td>${borrowedcopy.endDate}</td>`
+                                            borrowedcopiesHtml += `<td>${borrowedcopy.endDate}</td> 
+                                            <td></td>`
+                                             
                                           }
-                                          borrowedcopiesHtml += `<td><button type= "button" onclick = "returnBook(${borrowedcopy.id})" class="button-4">return book</button></td>       
-                                      </tr>`;
+                                                
+                                          borrowedcopiesHtml += `</tr>`;
           });
 
           document.getElementById("borrowedcopytable").innerHTML =
