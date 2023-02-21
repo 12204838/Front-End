@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <div class= "wholehead" id="head">
+  <div class="wholehead" id="head">
     <div class="header" id="myHeader">
       <h2>Working Talent
 
@@ -36,7 +36,7 @@
       <div class="dropdownwt">
         <button class="dropbtnwt">
           My account
-          
+
         </button>
         <div class="dropdown-contentwt">
           <a href="userportal.html">User Portal</a>
@@ -46,7 +46,7 @@
       <div class="dropdownwt" id="adminmenu">
         <button class="dropbtnwt">
           Admin
-          
+
         </button>
         <div class="dropdown-contentwt">
           <a href="adminportal.html">Admin portal</a>
@@ -58,22 +58,26 @@
           <a href="addpage.html">Add Books/Users</a>
         </div>
       </div>
-      <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()">
+      <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()" action = "inlogapage.html">
         <label class="logoutLblPos">
-          <input
-            name="submit2"
-            type="submit"
-            id="submit2"
-            value="Log out"
-            class="btn btn-success"
-          />
+          <input name="submit2" type="submit" id="submit2" value="Log out" class="btn btn-success" />
         </label>
       </form>
     </div>
   </div>
 
 
-<div class="container">
+  <div class="search-container">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search" id="searchbox">
+    </div>
+  </div>
+
+  <div id="notfound">
+
+  </div>
+
+  <div class="container">
     <table class="table styled-table">
       <thead>
         <tr>
@@ -97,7 +101,7 @@
   </div>
 
 
- 
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: fit-content;">
@@ -148,28 +152,113 @@
 
 
 <script>
-    /**
-   * calls the backend to delete the token in the database
-   */
-   function deleteTokenDataBase(){
 
-fetch('http://localhost:8080/user/logout/empty/token', {
-        headers: {
+  document.body.onkeydown = function (e) {
+    if (e.keyCode == 13)
+      search();
+  };
+
+  function search() {
+    let keyword = document.getElementById("searchbox").value;
+    console.log(keyword);
+
+    fetch(`http://localhost:8080/users/search/${keyword}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+
+        if (data.length == 0) {
+          console.log("I am here")
+          document.getElementById("notfound").innerHTML = "<br><br><br><h1 style='text-align: center;'>No users found</h1>"
+          document.getElementById("users-data").innerHTML = "";
+        }
+        else {
+
+          let usersHtml = '';
+          data.forEach(user => {
+
+            document.getElementById("notfound").innerHTML = "";
+
+            usersHtml += `
+  <tr onclick = "showBorrowedCopiesByUser(${user.id})">
+      <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">${user.id}</td>
+      <td style="display: none">${user.active}</td>
+
+      <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal" >${user.name}</td>
+      <td data-bs-toggle="modal" data-bs-target="#borrowedCopyModal">${user.email}</td>
+      <td style="display: none">${user.password}</td>
+      <td style="display: none">${user.username}</td>
+      `
+            if (user.admin) {
+              usersHtml += `<td class = "checkmark"><span >&#10003;</span></td>`
+            }
+            else {
+              usersHtml += `<td></td>`
+            }
+            if (user.active) {
+              usersHtml += `<td>
+                    <button class="button-4" type="button" onclick = "confirmAdmin(${user.id},${user.admin})">
+                              Set admin
+                            </button>
+                          </td>
+                          <td>
+                            <button class="button-4" type="button" onclick = "showAllBooks(${user.id})" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                              Assign book copy
+                            </button>
+                            </td>
+                            <td>
+                        <button class="button-4" type="button" onclick = "confirmDeactivation(${user.id})">
+                          Deactivate user
+                        </button>
+                       
+                      </td>`
+            }
+            else {
+              usersHtml +=
+                `<td></td>
+<td></td>
+<td></td>`
+            }
+            usersHtml += `</tr>`
+
+            document.getElementById('users-data').innerHTML = usersHtml
+
+          })
+          // .catch(e => {alert(e)});
+          // // if (res.status == 403) {
+          // //   window.location.href = 'errorpage.html'
+          // // }
+        }
+      })
+  }
+
+  /**
+ * calls the backend to delete the token in the database
+ */
+ function deleteTokenDataBase(){
+
+fetch('http://localhost:8080/user/logout/empty/token', {    
+    headers: {
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("token"),
         }
     })
     .then(res => res.json())
     .then(data => {
-      
-        window.location.href = "inlogapage.html";
+        console.log('Token is empty in the database');
         
+       
     })
     .then(localStorage.clear())
-  }
+   
+}
 
-      //Checks if admin or not
-      let hasAdminRights = localStorage.getItem('admin') == 1;
+  //Checks if admin or not
+  let hasAdminRights = localStorage.getItem('admin') == 1;
   if (!hasAdminRights) {
     document.getElementById('adminmenu').style.display = 'none';
   }
@@ -237,8 +326,8 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                                     </td>`
           }
           else {
-            usersHtml += 
-            `<td></td>
+            usersHtml +=
+              `<td></td>
             <td></td>
             <td></td>`
           }
@@ -267,9 +356,9 @@ fetch('http://localhost:8080/user/logout/empty/token', {
   function showAllBooks(userId) {
     fetch('http://localhost:8080/books', {
       headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        }
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }
     })
       .then(res => res.json())
       .then(data => {
@@ -543,16 +632,16 @@ fetch('http://localhost:8080/user/logout/empty/token', {
   }
 
   function showBorrowedCopiesByUser(userid) {
-        fetch(`http://localhost:8080/user/${userid}/borrowedcopies`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem('token')
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
+    fetch(`http://localhost:8080/user/${userid}/borrowedcopies`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem('token')
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
 
-              let borrowedCopiesHtml = `<table class="table table-striped">
+        let borrowedCopiesHtml = `<table class="table table-striped">
               <thead>
                 <tr>
                   <th>Working Talent Id</th>
@@ -562,44 +651,44 @@ fetch('http://localhost:8080/user/logout/empty/token', {
                 </tr>
               </thead>
               <tbody>`;
-                data.forEach(borrowedcopy => {
-                   
-                  
-                  
-                  borrowedCopiesHtml += `
+        data.forEach(borrowedcopy => {
+
+
+
+          borrowedCopiesHtml += `
                                       <tr> 
                                         <td>${borrowedcopy.wtId}</td> 
                                         <td>${borrowedcopy.bookTitle}</td>
                                         <td>${borrowedcopy.startDate}     </td>`
-                                        if (borrowedcopy.endDate == null) {
-                                            borrowedCopiesHtml += `<td>---</td>`
-                                        }
-                                        else {
-                                            borrowedCopiesHtml += `<td>${borrowedcopy.endDate}</td>`
-                                        }
-                                        borrowedCopiesHtml += `</tr>`;
+          if (borrowedcopy.endDate == null) {
+            borrowedCopiesHtml += `<td>---</td>`
+          }
+          else {
+            borrowedCopiesHtml += `<td>${borrowedcopy.endDate}</td>`
+          }
+          borrowedCopiesHtml += `</tr>`;
 
-                });
-                borrowedCopiesHtml += ` </tbody>
+        });
+        borrowedCopiesHtml += ` </tbody>
                      </table>`;
-                document.getElementById("borrowed-modal-table").innerHTML = borrowedCopiesHtml;
-                //console.log(this.responseText);
-            })
+        document.getElementById("borrowed-modal-table").innerHTML = borrowedCopiesHtml;
+        //console.log(this.responseText);
+      })
+  }
+
+  window.onscroll = function () { myFunction2() };
+
+  var head = document.getElementById("navbarwt");
+  var sticky = head.offsetTop;
+
+  function myFunction2() {
+    if (window.pageYOffset > sticky) {
+      head.classList.add("sticky");
+    } else {
+      head.classList.remove("sticky");
     }
 
-  window.onscroll = function() {myFunction2()};
-
-var head = document.getElementById("navbarwt");
-var sticky = head.offsetTop;
-
-function myFunction2() {
-  if (window.pageYOffset > sticky) {
-    head.classList.add("sticky");
-  } else {
-    head.classList.remove("sticky");
   }
-  
-}
   showUsers();
 
 </script>
@@ -666,13 +755,24 @@ function myFunction2() {
     border-radius: 50%;
   }
 
-    tr:hover {
-          background-color: #ffff99;
-        }
-    .styled-table tbody tr:nth-of-type(even):hover {
-      background-color: #ffff99;
-    }
+  tr:hover {
+    background-color: #ffff99;
+  }
 
+  .styled-table tbody tr:nth-of-type(even):hover {
+    background-color: #ffff99;
+  }
+
+  hr {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .search-container {
+    padding: 0 200px 0 200px;
+    text-align: center;
+    margin: 10px 50px 10px 50px;
+  }
 </style>
 
 </html>

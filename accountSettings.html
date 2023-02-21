@@ -1,313 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" href="booktablestyle.css" />
-    <link rel="stylesheet" href="switch.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
 
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Settings</title>
-  </head>
-  <body>
-    <div class= "wholehead" id="head">
-      <div class="header" id="myHeader">
-        <h2>Working Talent
+<head>
+  <link rel="stylesheet" type="text/css"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" href="booktablestyle.css" />
+  <link rel="stylesheet" href="switch.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 
-        </h2>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings</title>
+</head>
+
+<body>
+  <div class="wholehead" id="head">
+    <div class="header" id="myHeader">
+      <h2>Working Talent
+
+      </h2>
+    </div>
+
+
+    <div id="navbarwt" class="navbarwt">
+
+      <div class="dropdownwt">
+        <button class="dropbtnwt" onclick="location.href='showbooks.html'">
+          Home
+        </button>
       </div>
 
+      <div class="dropdownwt">
+        <button class="dropbtnwt">
+          My account
 
-      <div id="navbarwt" class="navbarwt">
-
-        <div class="dropdownwt">
-          <button class="dropbtnwt" onclick="location.href='showbooks.html'">
-            Home
-          </button>
+        </button>
+        <div class="dropdown-contentwt">
+          <a href="userportal.html">User Portal</a>
+          <a href="accountSettings.html">Account Settings</a>
         </div>
+      </div>
+      <div class="dropdownwt" id="adminmenu">
+        <button class="dropbtnwt">
+          Admin
 
-        <div class="dropdownwt">
-          <button class="dropbtnwt">
-            My account
-            
-          </button>
-          <div class="dropdown-contentwt">
-            <a href="userportal.html">User Portal</a>
-            <a href="accountSettings.html">Account Settings</a>
+        </button>
+        <div class="dropdown-contentwt">
+          <a href="adminportal.html">Admin portal</a>
+          <a href="booktable.html">Book Table</a>
+          <a href="bookcopy.html">Copy Table</a>
+          <a href="userstable.html"> User Table</a>
+          <a href="reservation.html"> Reservation Table</a>
+          <a href="borrowedcopy.html"> Borrowedcopy Table</a>
+          <a href="addpage.html">Add Books/Users</a>
+        </div>
+      </div>
+      <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()" action="inlogapage.html">
+        <label class="logoutLblPos">
+          <input name="submit2" type="submit" id="submit2" value="Log out" class="btn btn-success" />
+        </label>
+      </form>
+    </div>
+  </div>
+
+
+  <section class="py-5 my-5">
+    <div class="container">
+      <h1 class="mb-5">Account Settings</h1>
+      <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+        <div class="profile-tab-nav border-right">
+          <div class="p-4">
+            <div class="img-circle text-center mb-3">
+              <img src="img/user2.png" alt="Image" class="shadow">
+            </div>
+            <h4 class="text-center" id="ProfileName"></h4>
+          </div>
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab"
+              aria-controls="account" aria-selected="true">
+              <i class="fa fa-home text-center mr-1"></i>
+              Account
+            </a>
+            <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab"
+              aria-controls="password" aria-selected="false">
+              <i class="fa fa-key text-center mr-1"></i>
+              Password
+            </a>
           </div>
         </div>
-        <div class="dropdownwt" id="adminmenu">
-          <button class="dropbtnwt">
-            Admin
-            
-          </button>
-          <div class="dropdown-contentwt">
-            <a href="adminportal.html">Admin portal</a>
-            <a href="booktable.html">Book Table</a>
-            <a href="bookcopy.html">Copy Table</a>
-            <a href="userstable.html"> User Table</a>
-            <a href="reservation.html"> Reservation Table</a>
-            <a href="borrowedcopy.html"> Borrowedcopy Table</a>
-            <a href="addpage.html">Add Books/Users</a>
+        <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <h3 class="mb-4">Account Settings</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input id="fullName" type="text" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input id="email" type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="changeAccountDetails()">Update</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+            <h3 class="mb-4">Password Settings</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Old password</label>
+                  <input id="old-psw" type="password" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>New password</label>
+                  <input id="psw" type="password" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Confirm new password</label>
+                  <input id="psw-repeat" type="password" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-primary" onclick="checkPassword()">Update</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
           </div>
         </div>
-        <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()">
-          <label class="logoutLblPos">
-            <input
-              name="submit2"
-              type="submit"
-              id="submit2"
-              value="Log out"
-              class="btn btn-success"
-            />
-          </label>
-        </form>
       </div>
     </div>
-    
-
-    <section class="py-5 my-5">
-      <div class="container">
-        <h1 class="mb-5">Account Settings</h1>
-        <div class="bg-white shadow rounded-lg d-block d-sm-flex">
-          <div class="profile-tab-nav border-right">
-            <div class="p-4">
-              <div class="img-circle text-center mb-3">
-                <img src="img/user2.png" alt="Image" class="shadow">
-              </div>
-              <h4 class="text-center" id="ProfileName"></h4>
-            </div>
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
-                <i class="fa fa-home text-center mr-1"></i> 
-                Account
-              </a>
-              <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
-                <i class="fa fa-key text-center mr-1"></i> 
-                Password
-              </a>
-            </div>
-          </div>
-          <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
-              <h3 class="mb-4">Account Settings</h3>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Full Name</label>
-                      <input id="fullName" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Email</label>
-                      <input id="email"type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div>
-                <button class="btn btn-primary" onclick="changeAccountDetails()">Update</button>
-                <button class="btn btn-light">Cancel</button>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-              <h3 class="mb-4">Password Settings</h3>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Old password</label>
-                      <input id= "old-psw" type="password" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                      <label>New password</label>
-                      <input id= "psw" type="password" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                      <label>Confirm new password</label>
-                      <input id= "psw-repeat" type="password" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div>
-                <button class="btn btn-primary" onclick="checkPassword()">Update</button>
-                <button class="btn btn-light">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  </section>
 
 
-    <footer class="w3-container w3-teal">
-      <br>
-      <br>
-      <h4>Working Talent Dev</h4>
-      <br>
-      <br>
-    </footer>
-  </body>
+  <footer class="w3-container w3-teal">
+    <br>
+    <br>
+    <h4>Working Talent Dev</h4>
+    <br>
+    <br>
+  </footer>
+</body>
 
-  <script>
-       function deleteTokenDataBase(){
-
-fetch('http://localhost:8080/user/logout/empty/token', {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        
-        window.location.href = "inlogapage.html";
-
-    })
-    .then(localStorage.clear())
+<script>
+  //Checks if admin or not
+  let hasAdminRights = localStorage.getItem('admin') == 1;
+  if (!hasAdminRights) {
+    document.getElementById('adminmenu').style.display = 'none';
   }
 
-function checkAccountDetails(){
-        fetch('http://localhost:8080/user/accountdetails',{
-            headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        })
-        .then(res => res.json())
-        .then(data =>{
-          document.getElementById("ProfileName").innerHTML = data.name;
-          document.getElementById("fullName").value = data.name;
-          document.getElementById("email").value = data.email;
+  function deleteTokenDataBase() {
 
-        })
+    fetch('http://localhost:8080/user/logout/empty/token', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
       }
-
-      function changeAccountDetails(){
-        
-        let name = document.getElementById("fullName").value;
-        let email = document.getElementById("email").value;
-
-        
-        let newInfo = {
-            name: name,
-            email: email,
-        } 
-        fetch('http://localhost:8080/user/change/account/detail',{
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-            }, body: JSON.stringify(newInfo),
-        })
-        .then(res => res.json())
-        .then(data =>{
-          checkAccountDetails();
-            alert("Account details have been changed");
-            
-              //console.log(this.responseText);
-          })
-        }
-
-function checkPassword(){
-        fetch('http://localhost:8080/user/checkpassword',{
-            headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        })
-        .then(res => res.json())
-        .then(data =>{
-            let oldData= data.password
-            console.log(oldData)
-            oldPsw = document.getElementById("old-psw").value;
-            console.log(oldPsw)
-            if (oldPsw == oldData){
-
-                if (passwordValidation()){
-                    changePassword();
-                }else{
-                    alert("Passwords don't match");
-                }
-            }
-            else{
-                console.log("False");
-            }
-            //console.log(this.responseText);
-        })
-    }
-    
-    
-    function changePassword(){
-        
-        let password = document.getElementById("psw-repeat").value;
-        
-        let newInfo = {
-            password: password,
-        } 
-        fetch('http://localhost:8080/user/changepassword',{
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-            }, body: JSON.stringify(newInfo),
-        })
-        .then(res => res.json())
-        .then(data =>{
-            
-            alert("Password has been changed");
-              //console.log(this.responseText);
-          })
-        }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Token is empty in the database');
 
 
-    function passwordValidation() {
-      let password = document.getElementById("psw").value;
-      let pswRepeat = document.getElementById("psw-repeat").value;
+      })
+      .then(localStorage.clear())
 
-      if (password === pswRepeat) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    window.onscroll = function() {myFunction2()};
-
-var head = document.getElementById("navbarwt");
-var sticky = head.offsetTop;
-
-function myFunction2() {
-  if (window.pageYOffset > sticky) {
-    head.classList.add("sticky");
-  } else {
-    head.classList.remove("sticky");
   }
-  
-}
-    checkAccountDetails();
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  function checkAccountDetails() {
+    fetch('http://localhost:8080/user/accountdetails', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("ProfileName").innerHTML = data.name;
+        document.getElementById("fullName").value = data.name;
+        document.getElementById("email").value = data.email;
+
+      })
+  }
+
+  function changeAccountDetails() {
+
+    let name = document.getElementById("fullName").value;
+    let email = document.getElementById("email").value;
+
+
+    let newInfo = {
+      name: name,
+      email: email,
+    }
+    fetch('http://localhost:8080/user/change/account/detail', {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }, body: JSON.stringify(newInfo),
+    })
+      .then(res => res.json())
+      .then(data => {
+        checkAccountDetails();
+        alert("Account details have been changed");
+
+        //console.log(this.responseText);
+      })
+  }
+
+  function checkPassword() {
+    fetch('http://localhost:8080/user/checkpassword', {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        let oldData = data.password
+        console.log(oldData)
+        oldPsw = document.getElementById("old-psw").value;
+        console.log(oldPsw)
+        if (oldPsw == oldData) {
+
+          if (passwordValidation()) {
+            changePassword();
+          } else {
+            alert("Passwords don't match");
+          }
+        }
+        else {
+          console.log("False");
+        }
+        //console.log(this.responseText);
+      })
+  }
+
+
+  function changePassword() {
+
+    let password = document.getElementById("psw-repeat").value;
+
+    let newInfo = {
+      password: password,
+    }
+    fetch('http://localhost:8080/user/changepassword', {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      }, body: JSON.stringify(newInfo),
+    })
+      .then(res => res.json())
+      .then(data => {
+
+        alert("Password has been changed");
+        //console.log(this.responseText);
+      })
+  }
+
+
+  function passwordValidation() {
+    let password = document.getElementById("psw").value;
+    let pswRepeat = document.getElementById("psw-repeat").value;
+
+    if (password === pswRepeat) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  window.onscroll = function () { myFunction2() };
+
+  var head = document.getElementById("navbarwt");
+  var sticky = head.offsetTop;
+
+  function myFunction2() {
+    if (window.pageYOffset > sticky) {
+      head.classList.add("sticky");
+    } else {
+      head.classList.remove("sticky");
+    }
+
+  }
+  checkAccountDetails();
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </html>
