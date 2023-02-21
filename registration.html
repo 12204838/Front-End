@@ -88,12 +88,14 @@
     })
       .then(res => res.json())
       .then(data => {
-
+        if (data.success) {
+          window.location.href = 'showbooks.html';
+        }
         alert("Password has been changed");
         //console.log(this.responseText);
       })
 
-      window.location.href = 'showbooks.html';
+      //window.location.href = 'showbooks.html';
   }
 
   document.getElementById('psw-repeat').onkeydown = function (event) {

@@ -62,7 +62,7 @@
             <a href="addpage.html">Add Books/Users</a>
           </div>
         </div>
-        <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()">
+        <form align="right" name="form1" method="post" onclick="deleteTokenDataBase()" action = "inlogapage.html">
           <label class="logoutLblPos">
             <input
               name="submit2"
@@ -105,21 +105,23 @@
   </body>
   <script>
     
-       function deleteTokenDataBase(){
+    function deleteTokenDataBase(){
 
-fetch('http://localhost:8080/user/logout/empty/token', {
-        headers: {
+fetch('http://localhost:8080/user/logout/empty/token', {    
+    headers: {
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("token"),
         }
     })
     .then(res => res.json())
     .then(data => {
-
-        window.location.href = "inlogapage.html";
+        console.log('Token is empty in the database');
+        
+       
     })
     .then(localStorage.clear())
-  }
+   
+}
 
         //Checks if admin or not
         let hasAdminRights = localStorage.getItem('admin') == 1;
